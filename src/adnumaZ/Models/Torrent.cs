@@ -27,6 +27,8 @@ namespace adnumaZ.Models
 
         public DateTime? DeletedOn { get; set; }
 
+        public bool IsApproved { get; set; }
+
         // Torrent
 
         [Required]
@@ -36,6 +38,8 @@ namespace adnumaZ.Models
         public string TorrentFilePath { get; set; }
 
         public double Size { get; set; }
+
+        public string Description { get; set; }
 
         public string ImageUrl { get; set; }
 
