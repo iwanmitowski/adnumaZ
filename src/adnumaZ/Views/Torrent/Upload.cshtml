@@ -3,7 +3,6 @@
 <div>
     <form class="d-flex justify-content-center align-baseline" method="post" asp-controller="Torrent" , asp-action="Upload" enctype="multipart/form-data">
         <div>
-            <div asp-validation-summary="All" class="col-form-label text-danger list-unstyled"></div>
             <div class="form-group">
                 <label asp-for="Title" for="formTitle" class="col-form-label d-block"></label>
                 <input asp-for="Title" for="formTitle" class="form-control" />
@@ -12,9 +11,8 @@
             <div class="form-group">
                 <label asp-for="File" for="formFile" class="col-form-label d-block">
                 </label>
-                <input asp-for="File" for="formFile" class="form-control-file" accept="applications/x-bittorrent" />
-
-
+                <input asp-for="File" for="formFile" class="form-control-file" accept=".torrent" />
+                <span asp-validation-for="File" class="text-danger d-block"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" for="formTitle" class="col-form-label d-block"></label>

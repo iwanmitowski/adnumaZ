@@ -1,10 +1,10 @@
-﻿using adnumaZ.Common.Attributes;
-using adnumaZ.Common.Helpers;
-using adnumaZ.Data;
+﻿using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.ViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
@@ -27,14 +27,17 @@ namespace adnumaZ.Controllers
         private readonly ApplicationDbContext dbContext;
         private readonly ILogger<TorrentController> logger;
         private readonly IMapper mapper;
+        private readonly UserManager<User> userManager;
 
         public TorrentController(ApplicationDbContext dbContext,
             ILogger<TorrentController> logger,
-            IMapper mapper)
+            IMapper mapper,
+            UserManager<User> userManager)
         {
             this.dbContext = dbContext;
             this.logger = logger;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         public IActionResult ById(int id)
@@ -48,52 +51,37 @@ namespace adnumaZ.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload()
+        [Authorize]
+        public async Task<IActionResult> Upload(UploadTorrentViewModel torrentDTO)
         {
-            //Todo fix it with large files.
-            //Save it to db as entity
-            //Name the file properly
+            //Todo
+            //Inject usermanager in automapper so the user is automatically mapped
 
-            var request = HttpContext.Request;
-
-            // validation of Content-Type
-            // 1. first, it must be a form-data request
-            // 2. a boundary should be found in the Content-Type
-            if (!request.HasFormContentType ||
-                !MediaTypeHeaderValue.TryParse(request.ContentType, out var mediaTypeHeader) ||
-                string.IsNullOrEmpty(mediaTypeHeader.Boundary.Value))
+            if (!ModelState.IsValid)
             {
-                return new UnsupportedMediaTypeResult();
+                return View(torrentDTO);
             }
 
-            var reader = new MultipartReader(mediaTypeHeader.Boundary.Value, request.Body);
-            var section = await reader.ReadNextSectionAsync();
+            var torrent = mapper.Map<Torrent>(torrentDTO);
 
-            while (section != null)
+            await dbContext.AddAsync(torrent);
+
+            int fileNumber = dbContext.Torrents.Count() + 1;
+            var fileName = "File" + fileNumber + ".torrent";
+            var saveToPath = Path.Combine("D:", "DemoCodes", "temp", fileName);
+
+            torrent.TorrentFilePath = saveToPath;
+            torrent.Uploader = userManager.GetUserAsync(this.User).Result;
+
+            await dbContext.SaveChangesAsync();
+
+            using (Stream fileStream = new FileStream(saveToPath, FileMode.Create))
             {
-                var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition,
-                    out var contentDisposition);
-
-                if (hasContentDispositionHeader && contentDisposition.DispositionType.Equals("form-data") &&
-                    !string.IsNullOrEmpty(contentDisposition.FileName.Value))
-                {
-                    var fileName = "File" + DateTime.Now.Second + ".torrent";
-                    var saveToPath = Path.Combine("D:", "DemoCodes", "temp", fileName);
-
-                    using (var targetStream = System.IO.File.Create(saveToPath))
-                    {
-                        await section.Body.CopyToAsync(targetStream);
-                    }
-
-                    //Change it
-                    return RedirectToAction("Privacy", "Home");
-                }
-
-                section = await reader.ReadNextSectionAsync();
+                await torrentDTO.File.CopyToAsync(fileStream);
             }
 
-            // If the code runs to this location, it means that no files have been saved
-            return BadRequest("No files data in the request.");
+            //To torrents
+            return RedirectToAction("Privacy", "Home");
         }
 
         public IActionResult All()

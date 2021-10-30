@@ -76,12 +76,7 @@ namespace adnumaZ
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            app.Use(async (context, next) =>
-            {
-                context.Request.EnableBuffering();
-                await next();
-            });
-
+           
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
