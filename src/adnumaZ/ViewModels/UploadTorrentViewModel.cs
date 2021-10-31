@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using adnumaZ.Common.Аttributes;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,5 +22,8 @@ namespace adnumaZ.ViewModels
         public string ImageUrl { get; set; }
 
         public string UserId { get; set; }
+
+        [GoogleReCaptchaValidation]
+        public string RecaptchaValue { get; set; }
     }
 }
