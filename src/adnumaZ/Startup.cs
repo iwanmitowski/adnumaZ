@@ -36,7 +36,11 @@ namespace adnumaZ
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<User>(
+                options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews(options =>
             {
@@ -72,6 +76,7 @@ namespace adnumaZ
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+           
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
