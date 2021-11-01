@@ -6,14 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace adnumaZ.Controllers
@@ -67,7 +63,6 @@ namespace adnumaZ.Controllers
             var saveToPath = Path.Combine("D:", "DemoCodes", "temp", fileName);
 
             torrent.TorrentFilePath = saveToPath;
-            torrent.Uploader = userManager.GetUserAsync(this.User).Result;
 
             await dbContext.SaveChangesAsync();
 
@@ -82,7 +77,9 @@ namespace adnumaZ.Controllers
 
         public IActionResult All()
         {
-            return View();
+            var allTorrents = mapper.Map<List<TorrentAllViewModel>>(
+                dbContext.Torrents.Include(x=>x.Uploader));
+            return View(allTorrents);
         }
     }
 }

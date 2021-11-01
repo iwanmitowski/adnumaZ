@@ -1,1 +1,37 @@
-﻿<h1> All</h1>
+﻿@model List<TorrentAllViewModel>
+@{
+    ViewData["Title"] = "Torrents";
+}
+
+<table class="table table-hover table-responsive-lg">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th>Categories</th>
+            <th scope="col">Uploader</th>
+            <th scope="col">Size</th>
+            <th scope="col">Uploaded on</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var torrent in Model)
+        {
+            <tr>
+                <td><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></td>
+                <td>Temp Cat 1, Temp Cat 2</td>
+                <td>@torrent.Uploader</td>
+                <td>@torrent.Size</td>
+                <td>@torrent.CreatedOn</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+}

@@ -1,5 +1,5 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
-@model adnumaZ.ViewModels.UploadTorrentViewModel
+@model UploadTorrentViewModel
 
 <div>
     <form class="d-flex justify-content-center align-baseline" method="post" asp-controller="Torrent" , asp-action="Upload" enctype="multipart/form-data">
@@ -30,7 +30,7 @@
     </form>
 </div>
 
-@*Uncomment!!!*@ 
+@*Uncomment and the recaptcha attribute in the model!!!*@ 
 
 @*@section Scripts
 {
