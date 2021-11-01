@@ -21,31 +21,27 @@ namespace adnumaZ.Controllers
     public class TorrentController : Controller
     {
         private readonly string[] permittedExtensions = { ".torrent" };
-        private const long fileSizeLimit = 5242880000; //5 GB
         private static readonly FormOptions defaultFormOptions = new FormOptions();
 
         private readonly ApplicationDbContext dbContext;
-        private readonly ILogger<TorrentController> logger;
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
 
         public TorrentController(ApplicationDbContext dbContext,
-            ILogger<TorrentController> logger,
             IMapper mapper,
             UserManager<User> userManager)
         {
             this.dbContext = dbContext;
-            this.logger = logger;
             this.mapper = mapper;
             this.userManager = userManager;
         }
 
         public IActionResult ById(int id)
         {
-            return View();
+            return View(id);
         }
 
-        public IActionResult Upload(int? id)
+        public IActionResult Upload()
         {
             return View();
         }
