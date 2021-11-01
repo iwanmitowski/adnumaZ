@@ -2,11 +2,13 @@
 using adnumaZ.Models;
 using adnumaZ.ViewModels;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using System;
@@ -82,7 +84,9 @@ namespace adnumaZ.Controllers
 
         public IActionResult All()
         {
-            return View();
+            var allTorrents = mapper.Map<List<TorrentAllViewModel>>(
+                dbContext.Torrents.Include(x=>x.Uploader));
+            return View(allTorrents);
         }
     }
 }
