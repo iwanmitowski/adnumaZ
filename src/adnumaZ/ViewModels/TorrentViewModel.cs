@@ -2,11 +2,12 @@
 
 namespace adnumaZ.ViewModels
 {
-    public class TorrentAllViewModel
+    public class TorrentViewModel
     {
-        public int Id { get; set;
-        }
+        public int Id { get; set; }
+
         public string Title { get; set; }
+
         public string TitleShort { get; set; }
 
         public double Size { get; set; }

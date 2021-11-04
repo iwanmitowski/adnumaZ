@@ -1,6 +1,18 @@
-﻿@model List<TorrentAllViewModel>
+﻿@model TorrentListViewModel
 @{
     ViewData["Title"] = "Torrents";
+}
+
+@if (this.User.Identity.IsAuthenticated)
+{
+    <form asp-controller="Torrent" asp-action="All" asp-route-id="1">
+        <div class="input-group mb-4">
+            <input type="search" name="search" class="form-control" value="@Model.Search" placeholder="Enter keywords, space separated..." />
+            <div class="input-group-append">
+                <input type="submit" value="Search" class="btn btn-outline-primary" />
+            </div>
+        </div>
+    </form>
 }
 
 <table class="table table-hover table-responsive-lg">
@@ -14,7 +26,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var torrent in Model)
+        @foreach (var torrent in Model.Torrents)
         {
             <tr>
                 <td><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></td>

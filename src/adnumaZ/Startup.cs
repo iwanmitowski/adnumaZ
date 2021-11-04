@@ -75,12 +75,8 @@ namespace adnumaZ
             {
                 endpoints.MapControllerRoute(
                             name: "allTorrents",
-                            pattern: "t/",
-                            new { controller = "Torrent", action = "All" });
-                endpoints.MapControllerRoute(
-                            name: "byIdTorrents",
                             pattern: "t/{id?}",
-                            new { controller = "Torrent", action = "ById" });
+                            new { controller = "Torrent", action = "All" });
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

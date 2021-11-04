@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace adnumaZ.Controllers
 {
     public class TorrentController : Controller
     {
+        private const int TorrentsPerPage = 15;
         private readonly string[] permittedExtensions = { ".torrent" };
-        private static readonly FormOptions defaultFormOptions = new FormOptions();
 
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
@@ -75,11 +76,51 @@ namespace adnumaZ.Controllers
             return RedirectToAction("Privacy", "Home");
         }
 
-        public IActionResult All()
+        public IActionResult All(int id, string search)
         {
-            var allTorrents = mapper.Map<List<TorrentAllViewModel>>(
-                dbContext.Torrents.Include(x=>x.Uploader));
-            return View(allTorrents);
+            id = Math.Max(1, id);
+
+            var skip = (id - 1) * TorrentsPerPage;
+
+            var query = dbContext.Torrents
+                .Include(x => x.Uploader)
+                .Where(x => !x.IsApproved);
+
+            var words = search?
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.Trim())
+                .Select(x => x.ToLower())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToList();
+
+            if (words != null)
+            {
+                foreach (var word in words)
+                {
+                    query = query.Where(t =>t.Title.ToLower().Contains(word) ||
+                                            t.Description.ToLower().Contains(word));
+                }
+            }
+
+            var torrents = mapper.Map<List<TorrentViewModel>>(query
+                .OrderByDescending(x => x.CreatedOn)
+                .ThenByDescending(x => x.Id)
+                .Skip(skip)
+                .Take(TorrentsPerPage))
+                .ToList();
+
+            var torrentCount = query.Count();
+            var pagesCount = (int)Math.Ceiling(torrentCount / (double)TorrentsPerPage);
+
+            var viewModel = new TorrentListViewModel()
+            {
+                Torrents = torrents,
+                TorrentCount = torrentCount,
+                PagesCount = pagesCount,
+                Search = search,
+            };
+
+            return View(viewModel);
         }
     }
 }
