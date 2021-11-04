@@ -18,7 +18,7 @@ namespace adnumaZ.Services.Mapping
                 .ForMember(x => x.Size, y => y.MapFrom(s => s.File.Length / 1024 / 1024.0))
                 .AfterMap<SetUserMappingAction>(); //Mapping the uploader
 
-            this.CreateMap<Torrent, TorrentAllViewModel>()
+            this.CreateMap<Torrent, TorrentViewModel>()
                 .ForMember(x => x.Description, y => y.MapFrom(s => GetShortParameter(s.Description)))
                 .ForMember(x => x.TitleShort, y => y.MapFrom(s => GetShortParameter(s.Title)))
                 .ForMember(x => x.Size, y => y.MapFrom(s => s.Size.ToString("F4")))
