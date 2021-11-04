@@ -18,7 +18,6 @@ namespace adnumaZ.Controllers
     public class TorrentController : Controller
     {
         private const int TorrentsPerPage = 15;
-        private readonly string[] permittedExtensions = { ".torrent" };
 
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
@@ -97,7 +96,7 @@ namespace adnumaZ.Controllers
             {
                 foreach (var word in words)
                 {
-                    query = query.Where(t =>t.Title.ToLower().Contains(word) ||
+                    query = query.Where(t => t.Title.ToLower().Contains(word) ||
                                             t.Description.ToLower().Contains(word));
                 }
             }
@@ -115,6 +114,7 @@ namespace adnumaZ.Controllers
             var viewModel = new TorrentListViewModel()
             {
                 Torrents = torrents,
+                CurrentPage = id,
                 TorrentCount = torrentCount,
                 PagesCount = pagesCount,
                 Search = search,

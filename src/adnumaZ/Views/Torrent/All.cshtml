@@ -39,6 +39,103 @@
     </tbody>
 </table>
 
+@if (Model.TorrentCount != 0)
+{
+    <nav aria-label="HTMLs" class="mt-3 pt-3 bottom">
+        <ul class="pagination justify-content-center">
+            @if (Model.PagesCount > 1)
+            {
+                @if (Model.CurrentPage == 1)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Torrent" asp-action="All" asp-route-id="@Model.PreviousPage">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+
+                const int MorePagesToShow = 3;
+                var pagesToShow = new SortedSet<int>();
+
+                for (var i = 1; i <= Math.Min(MorePagesToShow, Model.PagesCount); i++)
+                {
+                    pagesToShow.Add(i);
+                }
+
+                @for (var i = this.Model.CurrentPage - MorePagesToShow; i <= this.Model.CurrentPage + MorePagesToShow; i++)
+                {
+                    if (i > 0 && i <= this.Model.PagesCount)
+                    {
+                        pagesToShow.Add(i);
+                    }
+                }
+
+                @for (var i = this.Model.PagesCount - MorePagesToShow + 1; i <= this.Model.PagesCount; i++)
+                {
+                    if (i > 0 && i <= this.Model.PagesCount)
+                    {
+                        pagesToShow.Add(i);
+                    }
+                }
+
+                @for (int i = 0; i < pagesToShow.Count; i++)
+                {
+                    var className = string.Empty;
+                    int pageNumber = pagesToShow.ElementAt(i);
+
+                    if (pageNumber == Model.CurrentPage)
+                    {
+                        className = "active";
+                    }
+
+                    if (i > 0 && pageNumber - 1 != pagesToShow.ElementAt(i - 1))
+                    {
+                        <li class="page-item @className">
+                            <a class="page-link" asp-controller="Torrent" asp-action="All" asp-route-id="@(pagesToShow.ElementAt(i - 1) + 1)" asp-route-search="@this.Model.Search">
+                                ...
+                            </a>
+                        </li>
+                    }
+
+                    <li class="page-item @className">
+                        <a class="page-link" asp-controller="Torrent" asp-action="All" asp-route-id="@pageNumber" asp-route-search="@Model.Search">
+                            <span aria-hidden="true"> @pageNumber </span>
+                        </a>
+                    </li>
+
+                }
+
+                @if (Model.CurrentPage == Model.PagesCount)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Torrent" asp-action="All" asp-route-id="@Model.NextPage" asp-route-search="@Model.Search" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+
+            }
+
+
+
+        </ul>
+    </nav>
+}
+
 @section Scripts
 {
     <script>
