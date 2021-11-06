@@ -12,6 +12,7 @@ namespace adnumaZ.Data
         }
 
         public DbSet<User> UserAccounts { get; set; }
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         public DbSet<Torrent> Torrents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
