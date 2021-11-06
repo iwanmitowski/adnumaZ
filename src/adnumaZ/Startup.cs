@@ -1,4 +1,5 @@
 using adnumaZ.Data;
+using adnumaZ.Data.Seeding;
 using adnumaZ.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +34,7 @@ namespace adnumaZ
                 {
                     options.SignIn.RequireConfirmedAccount = false;
                 })
+                .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews(options =>
             {
@@ -52,6 +54,16 @@ namespace adnumaZ
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                dbContext.Database.Migrate();
+                new ApplicationDbContextSeeder()
+                     .SeedAsync(dbContext, serviceScope.ServiceProvider)
+                     .GetAwaiter()
+                     .GetResult();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -62,7 +74,7 @@ namespace adnumaZ
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-           
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -74,9 +86,12 @@ namespace adnumaZ
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                            name: "allTorrents",
-                            pattern: "t/{id?}",
-                            new { controller = "Torrent", action = "All" });
+                    name: "allTorrents",
+                    pattern: "t/{id?}",
+                    new { controller = "Torrent", action = "All" });
+                endpoints.MapControllerRoute(
+                    name: "areaRoute",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
