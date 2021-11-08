@@ -17,5 +17,7 @@ namespace adnumaZ.ViewModels
         public User Uploader { get; set; }
 
         public string CreatedOn { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 }
