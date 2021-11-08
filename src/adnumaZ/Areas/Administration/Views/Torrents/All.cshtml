@@ -1,0 +1,58 @@
+﻿@model List<TorrentViewModel>
+@{
+    ViewData["Title"] = "Torrents";
+}
+
+<table class="table table-hover table-responsive-lg">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th>Categories</th>
+            <th scope="col">Uploader</th>
+            <th scope="col">Size</th>
+            <th scope="col">Approve</th>
+            <th scope="col">Uploaded on</th>
+        </tr>
+    </thead>
+    <tbody>
+        <form id="torrentssForm" method="post"></form>
+
+        @foreach (var torrent in Model)
+        {
+            var torrentIdTag = $"torrent{@torrent.Id}";
+
+            <tr id="@torrentIdTag">
+                <td><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></td>
+                <td>Temp Cat 1, Temp Cat 2</td>
+                <td>@torrent.Uploader</td>
+                <td>@torrent.Size</td>
+                <td>
+                    <button value="Approve" class="btn btn-success" onclick="approve(@torrent.Id)"> Approve </button>
+                </td>
+                <td>@torrent.CreatedOn</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script>
+        function approve(torrentId) {
+            var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
+            var json = { torrentId: torrentId };
+            $.ajax({
+                url: "/api/approve",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    $("#torrent" + torrentId).remove();
+                }
+            })
+        };
+    </script>
+}
