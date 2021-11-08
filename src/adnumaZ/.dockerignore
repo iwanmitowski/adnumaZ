@@ -1,0 +1,9 @@
+.dockerignore
+Dockerfile
+bin/
+obj/
+appdata/
+docker-compose.yml
+docker-compose.dev.yml
+.env.schema
+dev.sh
