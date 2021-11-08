@@ -1,3 +1,4 @@
+using System;
 using adnumaZ.Data;
 using adnumaZ.Data.Seeding;
 using adnumaZ.Models;
@@ -24,9 +25,14 @@ namespace adnumaZ
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var sqlConnectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION_STRING");
+            if(sqlConnectionString == null)
+            {
+                sqlConnectionString = Configuration.GetConnectionString("DefaultConnection");
+            }
+            
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(sqlConnectionString));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<User>(

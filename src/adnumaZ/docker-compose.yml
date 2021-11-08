@@ -1,0 +1,42 @@
+version: "3.9"
+
+networks:
+  internal:
+    internal: true
+  gateway:
+
+services:
+  app:
+    depends_on:
+      - db
+    networks:
+      - internal
+      - gateway
+    environment:
+      - TRACKER_API=http://tracker:$TRACKER_API_PORT
+    volumes:
+      - ./appdata/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+  
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      - internal
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=$SA_PASSWORD
+    volumes:
+      # These volumes must be owned by UID 10001
+      - ./appdata/data:/var/opt/mssql/data
+      - ./appdata/log:/var/opt/mssql/log
+      - ./appdata/secrets:/var/opt/mssql/secrets
+
+  tracker:
+    build: ../../vendor/bittorrent-tracker-rest
+    networks:
+      - internal
+      - gateway
+    environment:
+      - API_PORT:$TRACKER_API_PORT
+    ports:
+      - 6969:6969/tcp
+      - 6969:6969/udp

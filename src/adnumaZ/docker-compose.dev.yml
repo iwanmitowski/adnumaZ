@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  app:
+    image: mcr.microsoft.com/dotnet/sdk:5.0
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SQL_CONNECTION_STRING=Server=db;Database=master;User=sa;Password=$SA_PASSWORD;MultipleActiveResultSets=True
+    volumes:
+      - ./:/app
+    ports:
+      - 5000:5000
+    command: /app/dev.sh
