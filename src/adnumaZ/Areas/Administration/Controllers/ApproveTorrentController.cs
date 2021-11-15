@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace adnumaZ.Areas.Administration.Controllers
 {
-    [Authorize(Roles = Constants.AdministratorRoleName)]
+    //[Authorize(Roles = Constants.AdministratorRoleName)]
     [Route("api/approve")]
     [ApiController]
     public class ApproveTorrentController : ControllerBase

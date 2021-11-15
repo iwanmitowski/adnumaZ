@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace adnumaZ.Models
 {
@@ -20,13 +21,19 @@ namespace adnumaZ.Models
 
         public DateTime? ModifiedOn { get; set; }
 
+        [Required]
+        public bool IsBanned { get; set; }
+
+        public DateTime? BannedOn { get; set; }
+
+        public string BanReason { get; set; }
+
         // Deletable entity
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
 
         // User 
-
         public string ImageUrl { get; set; }
 
         public double UploadedTorrentGBs { get; set; }

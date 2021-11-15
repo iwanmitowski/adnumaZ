@@ -27,8 +27,24 @@ namespace adnumaZ.Areas.Administration.Controllers
             return View(users);
         }
 
+        public IActionResult Ban(string id)
+        {
+            return View();
+        }
 
+        public IActionResult Unban(string id)
+        {
+            return View();
+        }
 
-        //Ban/Unban/Make Admin
+        public IActionResult MakeAdmin(string id)
+        {
+            return View();
+        }
+
+        public IActionResult MakeNormalUser(string id)
+        {
+            return View();
+        }
     }
 }
