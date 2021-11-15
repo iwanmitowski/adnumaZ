@@ -32,40 +32,20 @@ namespace adnumaZ.Areas.Administration.Controllers
             return View();
         }
 
-<<<<<<< .mine
         public IActionResult Unban(string id)
         {
             return View();
         }
 
         public IActionResult MakeAdmin(string id)
-=======
-
-
-        //Ban/Unban/Make Admin
-
-
-
->>>>>>> .theirs
         {
-<<<<<<< .mine
             return View();
-=======
 
->>>>>>> .theirs
         }
-<<<<<<< .mine
 
         public IActionResult MakeNormalUser(string id)
         {
             return View();
         }
-=======
-
-
-
-
-
->>>>>>> .theirs
     }
 }
