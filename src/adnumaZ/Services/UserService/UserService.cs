@@ -1,6 +1,8 @@
-﻿using adnumaZ.Models;
+﻿using adnumaZ.Data;
+using adnumaZ.Models;
 using adnumaZ.Services.UserService.Contracts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,12 @@ namespace adnumaZ.Services.UserService
 {
     public class UserService : IUserService
     {
+        private readonly ApplicationDbContext dbContext;
         private readonly UserManager<User> userManager;
 
-        public UserService(UserManager<User> userManager)
+        public UserService(ApplicationDbContext dbContext ,UserManager<User> userManager)
         {
+            this.dbContext = dbContext;
             this.userManager = userManager;
         }
 
@@ -23,7 +27,7 @@ namespace adnumaZ.Services.UserService
 
             if (user == null)
             {
-                return;
+                throw new InvalidOperationException();
             }
 
             if (user.IsBanned)
@@ -39,6 +43,8 @@ namespace adnumaZ.Services.UserService
 
             user.ModifiedOn = DateTime.UtcNow;
             user.IsBanned = !user.IsBanned;
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

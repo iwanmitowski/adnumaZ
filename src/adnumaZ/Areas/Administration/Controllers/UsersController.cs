@@ -1,4 +1,5 @@
 ﻿using adnumaZ.Common.Constants;
+using adnumaZ.Controllers;
 using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.Services.UserService.Contracts;
@@ -39,8 +40,8 @@ namespace adnumaZ.Areas.Administration.Controllers
             var users = mapper
                 .Map<List<UserViewModel>>(dbContext.Users)
                 .OrderByDescending(x => x.ModifiedOn)
-                .ThenByDescending(x=>x.CreatedOn);
-                
+                .ThenByDescending(x => x.CreatedOn);
+
             return View(users);
         }
 
@@ -58,19 +59,30 @@ namespace adnumaZ.Areas.Administration.Controllers
 
         public IActionResult Ban(string id)
         {
-            return View(id);
+            var input = new BanInputModel()
+            {
+                UserId = id,
+                BanReason = string.Empty,
+            };
+
+            return View(input);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Ban(BanInputModel input)
         {
             await userService.ChangeBanCondition(input.UserId, input.BanReason);
 
-            return RedirectToAction(nameof(this.Banned));
+            return RedirectToAction(nameof(HomeController.Privacy));
         }
 
         public IActionResult Banned()
         {
+            var users = mapper
+               .Map<List<UserViewModel>>(dbContext.Users)
+               .Where(x => x.IsBanned)
+               .OrderByDescending(x => x.ModifiedOn)
+               .ThenByDescending(x => x.CreatedOn);
             //return all banned users as the index view
             return View();
         }

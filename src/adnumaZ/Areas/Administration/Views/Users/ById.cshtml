@@ -5,14 +5,25 @@
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                 <img class="rounded-circle mt-5" width="150px" src="@Model.ImageUrl"><span class="font-weight-bold mt-2">@Model.UserName</span><span class="text-black-50">@Model.Email</span><span> </span>
+
                 @if (Model.IsBanned)
                 {
-                    <div class="mt-5 text-center align-self-center"><button class="btn btn-danger profile-button" type="button" asp-area="Administration" asp-controller="Users" asp-action="Ban">Ban</button></div>
+                    <div class="mt-5 text-center align-self-center">
+                        <a asp-area="Administration" asp-controller="Users" asp-action="Ban" asp-route-id="@Model.Id" class="btn btn-danger profile-button" type="button">
+                            Unban
+                        </a>
+                    </div>
                 }
                 else
                 {
-                    <div class="mt-5 text-center align-self-center"><button class="btn btn-success profile-button" type="button">Unban</button></div>
+                    <div class="mt-5 text-center align-self-center">
+                        <a asp-area="Administration" asp-controller="Users" asp-action="Ban" asp-route-id="@Model.Id" class="btn btn-danger profile-button" type="button" value="Ban">
+                            Ban
+                        </a>
+                    </div>
                 }
+
+
             </div>
         </div>
         <div class="col-md-5 border-right">

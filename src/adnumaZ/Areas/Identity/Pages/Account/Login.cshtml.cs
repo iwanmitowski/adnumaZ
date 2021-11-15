@@ -82,16 +82,7 @@ namespace adnumaZ.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-
-
-
-            //TO TEST IT AFTER MIGRATION
-
-
-
-
+            
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -107,6 +98,12 @@ namespace adnumaZ.Areas.Identity.Pages.Account
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Page();
+                }
+
+                if (user.IsBanned)
+                {
+                    ModelState.AddModelError(string.Empty, $"You are banned. Reason: {user.BanReason}.");
                     return Page();
                 }
 
