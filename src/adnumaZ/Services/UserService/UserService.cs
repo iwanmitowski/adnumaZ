@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace adnumaZ.Services.UserService
@@ -21,7 +22,7 @@ namespace adnumaZ.Services.UserService
             this.userManager = userManager;
         }
 
-        public async Task ChangeBanCondition(string userId, string banReason)
+        public async Task ChangeBanCondition(string userId, [Optional] string banReason)
         {
             var user = await userManager.FindByIdAsync(userId);
 

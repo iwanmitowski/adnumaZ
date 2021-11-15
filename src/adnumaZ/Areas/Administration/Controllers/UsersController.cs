@@ -76,6 +76,24 @@ namespace adnumaZ.Areas.Administration.Controllers
             return RedirectToAction(nameof(HomeController.Privacy));
         }
 
+        //public IActionResult Unban(string id)
+        //{
+        //    var input = new BanInputModel()
+        //    {
+        //        UserId = id
+        //    };
+
+        //    return View(input);
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> Unban([FromForm] string id)
+        {
+            await userService.ChangeBanCondition(id);
+
+            return RedirectToAction(nameof(this.Index));
+        }
+
         public IActionResult Banned()
         {
             var users = mapper
@@ -83,8 +101,8 @@ namespace adnumaZ.Areas.Administration.Controllers
                .Where(x => x.IsBanned)
                .OrderByDescending(x => x.ModifiedOn)
                .ThenByDescending(x => x.CreatedOn);
-            //return all banned users as the index view
-            return View();
+
+            return View(users);
         }
 
         public IActionResult MakeAdmin(string id)
