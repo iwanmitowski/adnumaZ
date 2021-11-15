@@ -23,6 +23,9 @@ namespace adnumaZ.Services.Mapping
                 .ForMember(x => x.TitleShort, y => y.MapFrom(s => GetShortParameter(s.Title)))
                 .ForMember(x => x.Size, y => y.MapFrom(s => s.Size.ToString("F4")))
                 .ForMember(x => x.CreatedOn, y => y.MapFrom(s => s.CreatedOn.ToShortDateString()));
+
+            this.CreateMap<User, UserViewModel>()
+                .AfterMap<SetIsAdminMappingAction>();
         }
 
         private string GetShortParameter(string i) => 

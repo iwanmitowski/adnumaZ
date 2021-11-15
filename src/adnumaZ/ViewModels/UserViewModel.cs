@@ -1,29 +1,24 @@
-﻿using adnumaZ.Common.Constants;
-using adnumaZ.Common.Models.Contracts;
-using Microsoft.AspNetCore.Identity;
+﻿using adnumaZ.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace adnumaZ.Models
+namespace adnumaZ.ViewModels
 {
-    public class User : IdentityUser, IAuditInfo, IDeletableEntity
+    public class UserViewModel
     {
-        public User()
-        {
-            //this.Id = Guid.NewGuid().ToString();
-            this.UploadedTorrents = new HashSet<Torrent>();
-            this.DownloadedTorrents = new HashSet<Torrent>();
-            this.FavouriteTorrents = new HashSet<Torrent>();
-            this.ImageUrl = Constants.DefaultProfilePfp;
-        }
+        public string UserName { get; set; }
+
+        public string Email { get; set; }
+
+        public bool IsAdmin { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
 
-        [Required]
         public bool IsBanned { get; set; }
 
         public DateTime? BannedOn { get; set; }
@@ -42,9 +37,15 @@ namespace adnumaZ.Models
 
         public double DownloadedTorrentGBs { get; set; }
 
+        public int UploadedTorrentsCount { get; set; }
+
         public virtual ICollection<Torrent> UploadedTorrents { get; set; }
 
+        public int DownloadedTorrentsCount { get; set; }
+
         public virtual ICollection<Torrent> DownloadedTorrents { get; set; }
+
+        public int FavouriteTorrentsCount { get; set; }
 
         public virtual ICollection<Torrent> FavouriteTorrents { get; set; }
     }
