@@ -1,0 +1,13 @@
+﻿@model BanInputModel
+
+<div>
+    <form class="d-flex justify-content-center align-baseline" method="post" asp-area="Administration" asp-controller="Users" , asp-action="Ban">
+        <div>
+            <div class="form-group">
+                <label asp-for="BanReason" for="formTitle" class="col-form-label d-block" readonly>@Model.UserId</label>
+                <textarea asp-for="BanReason" for="formTitle" rows="8" cols="70" class="form-control"></textarea>
+            </div>
+            <input type="submit" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

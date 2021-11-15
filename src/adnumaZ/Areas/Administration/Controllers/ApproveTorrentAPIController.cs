@@ -14,11 +14,11 @@ namespace adnumaZ.Areas.Administration.Controllers
     //[Authorize(Roles = Constants.AdministratorRoleName)]
     [Route("api/approve")]
     [ApiController]
-    public class ApproveTorrentController : ControllerBase
+    public class ApproveTorrentAPIController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
 
-        public ApproveTorrentController(ApplicationDbContext dbContext)
+        public ApproveTorrentAPIController(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

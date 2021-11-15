@@ -1,6 +1,11 @@
-﻿@model List<adnumaZ.Models.User>
+﻿@model IEnumerable<adnumaZ.ViewModels.UserViewModel>
 
-@{
-    this.ViewData["Title"] = "Admin dashboard";
+@foreach (var user in Model)
+{
+    <p>@user.UserName</p>
+    <p>@user.IsAdmin</p>
+    <p>@user.IsBanned</p>
+    <p>@user.BanReason</p>
+    <p>##########################</p>
 }
 

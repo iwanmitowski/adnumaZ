@@ -2,7 +2,8 @@
 @{
     ViewData["Title"] = "Torrents";
 }
-
+<form id="torrentsForm" method="post">
+</form>
 <table class="table table-hover table-responsive-lg">
     <thead>
         <tr>
@@ -15,8 +16,6 @@
         </tr>
     </thead>
     <tbody>
-        <form id="torrentssForm" method="post"></form>
-
         @foreach (var torrent in Model)
         {
             var torrentIdTag = $"torrent{@torrent.Id}";
@@ -39,6 +38,7 @@
 @section Scripts
 {
     <script>
+
         function approve(torrentId) {
             var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
             var json = { torrentId: torrentId };
@@ -52,7 +52,7 @@
                 success: function (data) {
                     $("#torrent" + torrentId).remove();
                 }
-            })
-        };
+            });
+        }
     </script>
 }
