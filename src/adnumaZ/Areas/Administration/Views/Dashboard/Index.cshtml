@@ -1,0 +1,72 @@
+﻿@model DashboardViewModel
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInRight">
+
+                <div class="ibox-content m-b-sm border-bottom ">
+                    <div class="p-xs mt-1">
+                        <h2>Dashboard - site info</h2>
+                    </div>
+                </div>
+
+                <div class="ibox-content forum-container">
+
+                    <div class="forum-item">
+                        <div class="row text-center">
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <a asp-area="Administration" asp-controller="Users" asp-action="Index">Users</a>
+                                </div>
+                                <span class="views-number">
+                                    @Model.TotalRegisteredUsers
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <a asp-area="Administration" asp-controller="Users" asp-action="Banned">Banned Users</a>
+                                </div>
+                                <span class="views-number">
+                                    @Model.TotalBannedUsers
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <a asp-area="Administration" asp-controller="Torrents" asp-action="All">Torrents</a>
+                                </div>
+                                <span class="views-number">
+                                    @Model.TotalTorrents
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <p>Downloaded GBs</p>
+                                </div>
+                                <span class="views-number">
+                                    @Model.TotalDownloadedGBs
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <p>Uploaded GBs</p>
+                                </div>
+                                <span class="views-number">
+                                    @Model.TotalUploadedGBs
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <p>Comments</p>
+                                </div>
+                                <span class="views-number">
+                                    TODO!!!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
