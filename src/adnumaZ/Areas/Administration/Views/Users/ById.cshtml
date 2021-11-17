@@ -25,6 +25,28 @@
                         </a>
                     </div>
                 }
+                @if (Model.IsAdmin)
+                {
+                    <div class="mt-5 text-center align-self-center">
+                        <form asp-area="Administration" asp-controller="Users" asp-action="DemoteToUser" onSubmit="return confirm('Are you sure you wish to demote to user @Model.UserName ?');">
+                            <input asp-for="@Model.Id" type="hidden" />
+                            <button class="btn btn-warning profile-button" type="submit">
+                                Demote To User
+                            </button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-5 text-center align-self-center">
+                        <form asp-area="Administration" asp-controller="Users" asp-action="PromoteToAdmin" onSubmit="return confirm('Are you sure you wish to promote to admin @Model.UserName ?');">
+                            <input asp-for="@Model.Id" type="hidden" />
+                            <button class="btn btn-warning profile-button" type="submit">
+                                Promote To Admin
+                            </button>
+                        </form>
+                    </div>
+                }
             </div>
         </div>
         <div class="col-md-5 border-right">

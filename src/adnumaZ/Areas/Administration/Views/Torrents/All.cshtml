@@ -26,14 +26,13 @@
                 <td>@torrent.Uploader</td>
                 <td>@torrent.Size</td>
                 <td>
-                    <button value="Approve" class="btn btn-success" onclick="approve(@torrent.Id)"> Approve </button>
+                    <button value="Approve" class="btn btn-success" onclick="approve(@torrent.Id)" > Approve </button>
                 </td>
                 <td>@torrent.CreatedOn</td>
             </tr>
         }
     </tbody>
 </table>
-
 
 @section Scripts
 {

@@ -1,4 +1,5 @@
-﻿using adnumaZ.Data;
+﻿using adnumaZ.Common.Constants;
+using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.Services.UserService.Contracts;
 using Microsoft.AspNetCore.Identity;
@@ -22,9 +23,14 @@ namespace adnumaZ.Services.UserService
             this.userManager = userManager;
         }
 
+        public async Task<User> GetUser(string userId)
+        {
+            return await userManager.FindByIdAsync(userId);
+        }
+
         public async Task ChangeBanCondition(string userId, [Optional] string banReason)
         {
-            var user = await userManager.FindByIdAsync(userId);
+            var user = await GetUser(userId);
 
             if (user == null)
             {
@@ -44,6 +50,26 @@ namespace adnumaZ.Services.UserService
 
             user.ModifiedOn = DateTime.UtcNow;
             user.IsBanned = !user.IsBanned;
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task PromoteToAdmin(string userId)
+        {
+            var user = await GetUser(userId);
+
+            await userManager.AddToRoleAsync(user, Constants.AdministratorRoleName);
+            user.ModifiedOn = DateTime.UtcNow;
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DemoteToUser(string userId)
+        {
+            var user = await GetUser(userId);
+
+            await userManager.RemoveFromRoleAsync(user, Constants.AdministratorRoleName);
+            user.ModifiedOn = DateTime.UtcNow;
 
             await dbContext.SaveChangesAsync();
         }

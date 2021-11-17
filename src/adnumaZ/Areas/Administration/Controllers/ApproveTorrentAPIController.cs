@@ -23,7 +23,6 @@ namespace adnumaZ.Areas.Administration.Controllers
             this.dbContext = dbContext;
         }
 
-        
         [HttpPost]
         public async Task<ActionResult<ApproveTorrentResponseModel>> ApproveTorrent(ApproveTorrentInputModel input)
         {
@@ -38,7 +37,6 @@ namespace adnumaZ.Areas.Administration.Controllers
             await dbContext.SaveChangesAsync();
 
             return new ApproveTorrentResponseModel() { IsApproved = true };
-        } 
-
+        }
     }
 }

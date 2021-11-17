@@ -6,11 +6,13 @@ using adnumaZ.Services.UserService.Contracts;
 using adnumaZ.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -24,21 +26,24 @@ namespace adnumaZ.Areas.Administration.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
         private readonly IUserService userService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public UsersController(ApplicationDbContext dbContext, IMapper mapper, UserManager<User> userManager, IUserService userService)
+        public UsersController(ApplicationDbContext dbContext, IMapper mapper, UserManager<User> userManager, IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.userManager = userManager;
             this.userService = userService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //OrderByDesc(x => x.ModifiedOn)
+            var user = await userManager.GetUserAsync(HttpContext.User);
 
             var users = mapper
                 .Map<List<UserViewModel>>(dbContext.Users)
+                .Where(x=>x.Id != user.Id)
                 .OrderByDescending(x => x.ModifiedOn)
                 .ThenByDescending(x => x.CreatedOn);
 
@@ -76,16 +81,6 @@ namespace adnumaZ.Areas.Administration.Controllers
             return RedirectToAction(nameof(HomeController.Privacy));
         }
 
-        //public IActionResult Unban(string id)
-        //{
-        //    var input = new BanInputModel()
-        //    {
-        //        UserId = id
-        //    };
-
-        //    return View(input);
-        //}
-
         [HttpPost]
         public async Task<IActionResult> Unban([FromForm] string id)
         {
@@ -105,13 +100,19 @@ namespace adnumaZ.Areas.Administration.Controllers
             return View(users);
         }
 
-        public IActionResult MakeAdmin(string id)
+        [HttpPost]
+        public async Task<IActionResult> PromoteToAdmin(string id)
         {
+            await userService.PromoteToAdmin(id);
+
             return RedirectToAction(nameof(this.Index));
         }
 
-        public IActionResult MakeNormalUser(string id)
+        [HttpPost]
+        public async  Task<IActionResult> DemoteToUser(string id)
         {
+            await userService.DemoteToUser(id);
+
             return RedirectToAction(nameof(this.Index));
         }
     }
