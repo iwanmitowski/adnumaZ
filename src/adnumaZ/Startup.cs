@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using adnumaZ.Services.UserService.Contracts;
+using adnumaZ.Services.UserService;
 
 namespace adnumaZ
 {
@@ -34,6 +36,7 @@ namespace adnumaZ
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(sqlConnectionString));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddDefaultIdentity<User>(
                 options =>
@@ -79,7 +82,7 @@ namespace adnumaZ
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-           
+
             app.UseStaticFiles();
 
             app.UseRouting();

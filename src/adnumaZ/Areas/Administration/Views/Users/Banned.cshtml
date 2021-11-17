@@ -8,7 +8,7 @@
 
                 <div class="ibox-content m-b-sm border-bottom ">
                     <div class="p-xs mt-1">
-                        <h2>Registered users - <span class="text-danger">not banned</span></h2>
+                        <h2>Registered users - <span class="text-danger">banned</span></h2>
                     </div>
                 </div>
 
@@ -16,7 +16,7 @@
 
                     <div class="forum-title">
                         <div class="pull-right forum-desc">
-                            <samll>Total users: @Model.Count()</samll>
+                            <samll>Total banned users: @Model.Count()</samll>
                         </div>
                         <h3>Users</h3>
                     </div>
@@ -26,9 +26,6 @@
                         <div class="forum-item">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <p>Username and Email</p>
-                                    </div>
                                     <div class="forum-icon mr-5" width="50">
                                         <img width="50" src="@user.ImageUrl" alt="User profile picture" />
                                     </div>
@@ -37,18 +34,18 @@
                                 </div>
                                 <div class="col-md-2 forum-info">
                                     <div class="mb-2">
-                                        <p>Uploaded GBs</p>
+                                        <p>Ban date</p>
                                     </div>
                                     <span class="views-number">
-                                        @user.UploadedTorrentGBs
+                                        @user.BannedOn
                                     </span>
                                 </div>
                                 <div class="col-md-2 forum-info">
                                     <div class="mb-2">
-                                        <p>Downloaded GBs</p>
+                                        <p>Ban reason</p>
                                     </div>
                                     <span class="views-number">
-                                        @user.DownloadedTorrentGBs
+                                        @user.BanReasonShortened
                                     </span>
                                 </div>
                                 <div class="col-md-2 forum-info">

@@ -1,6 +1,7 @@
 ﻿using adnumaZ.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace adnumaZ.Data
 {
@@ -20,6 +21,10 @@ namespace adnumaZ.Data
             builder.Entity<User>()
                 .HasMany(t => t.UploadedTorrents)
                 .WithOne(c => c.Uploader);
+
+            builder.Entity<User>()
+                .Property(u => u.CreatedOn)
+                .HasDefaultValue(DateTime.UtcNow);
 
             base.OnModelCreating(builder);
         }

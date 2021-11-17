@@ -1,4 +1,5 @@
-﻿using adnumaZ.Data.Seeding.Contracts;
+﻿using adnumaZ.Common.Constants;
+using adnumaZ.Data.Seeding.Contracts;
 using adnumaZ.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,6 @@ namespace adnumaZ.Data.Seeding
 {
     public class RolesSeeder : ISeeder
     {
-        private const string AdministratorRoleName = "Administrator";
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
@@ -20,14 +20,14 @@ namespace adnumaZ.Data.Seeding
 
         private async Task SeedRoleAsync(RoleManager<ApplicationRole> roleManager)
         {
-            var role = await roleManager.FindByNameAsync(AdministratorRoleName);
+            var role = await roleManager.FindByNameAsync(Constants.AdministratorRoleName);
 
             if (role != null)
             {
                 return;
             }
 
-            var result = await roleManager.CreateAsync(new ApplicationRole(AdministratorRoleName));
+            var result = await roleManager.CreateAsync(new ApplicationRole(Constants.AdministratorRoleName));
 
             if (!result.Succeeded)
             {

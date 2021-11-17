@@ -1,0 +1,98 @@
+﻿@model UserViewModel
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="150px" src="@Model.ImageUrl"><span class="font-weight-bold mt-2">@Model.UserName</span><span class="text-black-50">@Model.Email</span><span> </span>
+
+                @if (Model.IsBanned)
+                {
+                    <div class="mt-5 text-center align-self-center">
+                        <form asp-area="Administration" asp-controller="Users" asp-action="Unban" onSubmit="return confirm('Are you sure you wish to unban @Model.UserName ?');">
+                            <input asp-for="@Model.Id" type="hidden" />
+                            <button class="btn btn-danger profile-button" type="submit">
+                                Unban
+                            </button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-5 text-center align-self-center">
+                        <a asp-area="Administration" asp-controller="Users" asp-action="Ban" asp-route-id="@Model.Id" class="btn btn-danger profile-button" type="button" value="Ban">
+                            Ban
+                        </a>
+                    </div>
+                }
+                @if (Model.IsAdmin)
+                {
+                    <div class="mt-5 text-center align-self-center">
+                        <form asp-area="Administration" asp-controller="Users" asp-action="DemoteToUser" onSubmit="return confirm('Are you sure you wish to demote to user @Model.UserName ?');">
+                            <input asp-for="@Model.Id" type="hidden" />
+                            <button class="btn btn-warning profile-button" type="submit">
+                                Demote To User
+                            </button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-5 text-center align-self-center">
+                        <form asp-area="Administration" asp-controller="Users" asp-action="PromoteToAdmin" onSubmit="return confirm('Are you sure you wish to promote to admin @Model.UserName ?');">
+                            <input asp-for="@Model.Id" type="hidden" />
+                            <button class="btn btn-warning profile-button" type="submit">
+                                Promote To Admin
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12 mt-2"><label class="labels">Created On</label><input asp-for="CreatedOn" class="form-control" readonly /></div>
+                    @if (Model.IsAdmin)
+                    {
+                        <div class="col-md-12 mt-2"><label class="labels">Is Admin</label><input type="text" value="Admin" class="form-control" readonly /></div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12 mt-2"><label class="labels">Is Admin</label><input type="text" value="Default User" class="form-control" readonly /></div>
+                    }
+
+                    @if (Model.IsBanned == true)
+                    {
+                        <div class="col-md-12 mt-2"><label class="labels">Is Banned</label><input type="text" value="Banned" class="form-control" readonly /></div>
+                        <div class="col-md-12 mt-2"><label class="labels">Banned On</label><input asp-for="IsBanned" type="text" class="form-control" readonly /></div>
+                        <div class="col-md-12 mt-2"><label class="labels">Ban Reason</label><textarea asp-for="BanReason" class="form-control" readonly></textarea></div>
+                    }
+
+                    @if (Model.IsDeleted == true)
+                    {
+                        <div class="col-md-12 mt-2"><label class="labels">Is Deleted</label><input type="text" value="Deleted" class="form-control" readonly /></div>
+                        <div class="col-md-12 mt-2"><label class="labels">Banned On</label><input asp-for="DeletedOn" type="text" class="form-control" readonly /></div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">User Torrent Stats</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12 mt-2"><label class="labels">Uploaded Torrent GBs</label><input type="text" value="@Model.UploadedTorrentGBs" class="form-control" readonly /></div>
+                    <div class="col-md-12 mt-2"><label class="labels">Downloaded Torrent GBs</label><input type="text" value="@Model.DownloadedTorrentGBs" class="form-control" readonly /></div>
+                    <div class="col-md-12 mt-2"><label class="labels">Uploaded Torrents Count</label><input type="text" value="@Model.UploadedTorrentsCount" class="form-control" readonly /></div>
+                    <div class="col-md-12 mt-2"><label class="labels">Downloaded Torrents Count</label><input type="text" value="@Model.DownloadedTorrentsCount" class="form-control" readonly /></div>
+                    <div class="col-md-12 mt-2"><label class="labels">Favourited Torrents Count</label><input type="text" value="@Model.FavouriteTorrentsCount" class="form-control" readonly /></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

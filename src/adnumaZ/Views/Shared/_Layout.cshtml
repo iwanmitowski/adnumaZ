@@ -28,6 +28,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Torrent" asp-action="Upload">Upload</a>
                         </li>
+                        @if (User.IsInRole(adnumaZ.Common.Constants.Constants.AdministratorRoleName))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>

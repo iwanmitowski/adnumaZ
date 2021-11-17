@@ -3,7 +3,6 @@ using adnumaZ.Models;
 using adnumaZ.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -83,7 +82,7 @@ namespace adnumaZ.Controllers
 
             var query = dbContext.Torrents
                 .Include(x => x.Uploader)
-                .Where(x => !x.IsApproved);
+                .Where(x => x.IsApproved);
 
             var words = search?
                 .Split(' ', StringSplitOptions.RemoveEmptyEntries)
