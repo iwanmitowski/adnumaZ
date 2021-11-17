@@ -45,9 +45,6 @@ namespace adnumaZ.Controllers
         [Authorize]
         public async Task<IActionResult> Upload(UploadTorrentViewModel torrentDTO)
         {
-            //Todo
-            //Inject usermanager in automapper so the user is automatically mapped
-
             if (!ModelState.IsValid)
             {
                 return View(torrentDTO);
@@ -63,11 +60,22 @@ namespace adnumaZ.Controllers
 
             torrent.TorrentFilePath = saveToPath;
 
-            await dbContext.SaveChangesAsync();
+            var user = await userManager.GetUserAsync(HttpContext.User);
 
-            using (Stream fileStream = new FileStream(saveToPath, FileMode.Create))
+            try
             {
-                await torrentDTO.File.CopyToAsync(fileStream);
+                using (Stream fileStream = new FileStream(saveToPath, FileMode.Create))
+                {
+                    await torrentDTO.File.CopyToAsync(fileStream);
+                }
+
+                user.UploadedTorrents.Add(torrent);
+
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
             }
 
             //To torrents

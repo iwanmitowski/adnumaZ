@@ -9,10 +9,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -43,7 +45,7 @@ namespace adnumaZ.Areas.Administration.Controllers
 
             var users = mapper
                 .Map<List<UserViewModel>>(dbContext.Users)
-                .Where(x=>x.Id != user.Id)
+                .Where(x => x.Id != user.Id)
                 .OrderByDescending(x => x.ModifiedOn)
                 .ThenByDescending(x => x.CreatedOn);
 
@@ -52,7 +54,13 @@ namespace adnumaZ.Areas.Administration.Controllers
 
         public async Task<IActionResult> ById(string id)
         {
-            var user = mapper.Map<UserViewModel>(await userManager.FindByIdAsync(id));
+            var userFromDb = await dbContext.UserAccounts
+                .Include(x => x.UploadedTorrents)
+                .Include(x => x.DownloadedTorrents)
+                .Include(x => x.FavouriteTorrents)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            var user = mapper.Map<UserViewModel>(userFromDb);
 
             if (user == null)
             {
@@ -109,7 +117,7 @@ namespace adnumaZ.Areas.Administration.Controllers
         }
 
         [HttpPost]
-        public async  Task<IActionResult> DemoteToUser(string id)
+        public async Task<IActionResult> DemoteToUser(string id)
         {
             await userService.DemoteToUser(id);
 

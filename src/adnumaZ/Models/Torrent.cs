@@ -44,6 +44,7 @@ namespace adnumaZ.Models
         [InverseProperty(nameof(User.Id))]
         public string UserId { get; set; }
 
+        [InverseProperty(nameof(User.UploadedTorrents))]
         public virtual User Uploader { get; set; }
 
         [InverseProperty(nameof(User.DownloadedTorrents))]
