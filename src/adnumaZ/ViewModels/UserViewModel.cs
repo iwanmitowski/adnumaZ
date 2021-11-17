@@ -26,6 +26,8 @@ namespace adnumaZ.ViewModels
 
         public string BanReason { get; set; }
 
+        public string BanReasonShortened => $"{BanReason.Substring(0, Math.Min(BanReason.Length, 15))}...";
+
         // Deletable entity
         public bool IsDeleted { get; set; }
 

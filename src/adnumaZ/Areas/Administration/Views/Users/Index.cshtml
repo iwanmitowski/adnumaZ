@@ -1,11 +1,75 @@
 ﻿@model IEnumerable<UserViewModel>
 
-@foreach (var user in Model)
-{
-    <p><a asp-area="Administration" asp-controller="Users" asp-action="ById" asp-route-id="@user.Id">@user.UserName</a></p>
-    <p>@user.IsAdmin</p>
-    <p>@user.IsBanned</p>
-    <p>@user.BanReason</p>
-    <p>##########################</p>
-}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInRight">
+
+                <div class="ibox-content m-b-sm border-bottom ">
+                    <div class="p-xs mt-1">
+                        <h2>Registered users - <span class="text-danger">not banned</span></h2>
+                    </div>
+                </div>
+
+                <div class="ibox-content forum-container">
+
+                    <div class="forum-title">
+                        <div class="pull-right forum-desc">
+                            <samll>Total users: @Model.Count()</samll>
+                        </div>
+                        <h3>Users</h3>
+                    </div>
+
+                    @foreach (var user in Model)
+                    {
+                        <div class="forum-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="forum-icon mr-5" width="50">
+                                        <img width="50" src="@user.ImageUrl" alt="User profile picture" />
+                                    </div>
+                                    <a asp-area="Administration" asp-controller="Users" asp-action="ById" asp-route-id="@user.Id">@user.UserName</a>
+                                    <div class="forum-sub-title">@user.Email</div>
+                                </div>
+                                <div class="col-md-2 forum-info">
+                                    <div class="mb-2">
+                                        <small>Uploaded GBs</small>
+                                    </div>
+                                    <span class="views-number">
+                                        @user.UploadedTorrentGBs
+                                    </span>
+                                </div>
+                                <div class="col-md-2 forum-info">
+                                    <div class="mb-2">
+                                        <small>Downloaded GBs</small>
+                                    </div>
+                                    <span class="views-number">
+                                        @user.DownloadedTorrentGBs
+                                    </span>
+                                </div>
+                                <div class="col-md-2 forum-info">
+                                    <div class="mb-2">
+                                        <small>Is Admin</small>
+                                    </div>
+                                    <span class="views-number">
+                                        @user.IsAdmin
+                                    </span>
+                                </div>
+                                <div class="col-md-2 forum-info">
+                                    <div class="mb-2">
+                                        <small>Register date</small>
+                                    </div>
+                                    <span class="views-number">
+                                        @user.CreatedOn
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 

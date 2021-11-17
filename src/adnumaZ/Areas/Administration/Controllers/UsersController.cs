@@ -78,7 +78,7 @@ namespace adnumaZ.Areas.Administration.Controllers
         {
             await userService.ChangeBanCondition(input.UserId, input.BanReason);
 
-            return RedirectToAction(nameof(HomeController.Privacy));
+            return RedirectToAction(nameof(this.Banned));
         }
 
         [HttpPost]
