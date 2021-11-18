@@ -31,9 +31,20 @@ namespace adnumaZ.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult ById(int id)
+        public async Task<IActionResult> ById(int id)
         {
-            return View(id);
+            var torrent = mapper.Map<TorrentViewModel>(
+                await dbContext.Torrents
+                .Include(x => x.Uploader)
+                .Include(x => x.Downloaders)
+                .FirstOrDefaultAsync(x => x.Id == id));
+
+            if (torrent == null)
+            {
+                return NotFound();
+            }
+
+            return View(torrent);
         }
 
         public IActionResult Upload()
