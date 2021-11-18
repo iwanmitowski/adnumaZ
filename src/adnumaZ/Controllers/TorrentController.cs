@@ -47,7 +47,7 @@ namespace adnumaZ.Controllers
             return View(torrent);
         }
 
-        public IActionResult Download(int? id)
+        public IActionResult Download()
         {
             return RedirectToAction(nameof(this.All));
         }
