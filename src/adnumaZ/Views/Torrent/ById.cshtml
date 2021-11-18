@@ -8,7 +8,11 @@
                     <div class="card single_post">
                         <div class="body">
                             <div>
-                                <h3 class="text-center">Link: <u><a asp-controller="Torrent" asp-action="Download" asp-route-id="@Model.Id" class="torrent-download-link underline">@Model.Title</a></u></h3>
+                                <form asp-controller="Torrent" asp-action="Download">
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <h3 class="text-center">Link: <input type="submit" class="torrent-download-link underline" value="@Model.Title"></h3>
+                                </form>
+                                
                             </div>
                             <div class="img-post">
                                 <img class="d-block img-fluid ml-auto mr-auto" src="@Model.ImageUrl" alt="Torrent Image">
@@ -43,6 +47,7 @@
                         </div>
                         <div class="body">
                             <ul class="comment-reply list-unstyled">
+                                @*foreach*@
                                 <li class="row clearfix">
                                     <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Awesome Image"></div>
                                     <div class="text-box col-md-10 col-8 p-l-0 p-r0">
@@ -54,28 +59,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                                <li class="row clearfix">
-                                    <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Awesome Image"></div>
-                                    <div class="text-box col-md-10 col-8 p-l-0 p-r0">
-                                        <h5 class="m-b-0">Christian Louboutin</h5>
-                                        <p>Great tutorial but few issues with it? If i try open post i get following errors. Please can you help me?</p>
-                                        <ul class="list-inline">
-                                            <li><a href="javascript:void(0);">Mar 12 2018</a></li>
-                                            <li><a href="javascript:void(0);">Reply</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="row clearfix">
-                                    <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="Awesome Image"></div>
-                                    <div class="text-box col-md-10 col-8 p-l-0 p-r0">
-                                        <h5 class="m-b-0">Kendall Jenner</h5>
-                                        <p>Very nice and informative article. In all the years I've done small and side-projects as a freelancer, I've ran into a few problems here and there.</p>
-                                        <ul class="list-inline">
-                                            <li><a href="javascript:void(0);">Mar 20 2018</a></li>
-                                            <li><a href="javascript:void(0);">Reply</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
+                               
                             </ul>
                         </div>
                     </div>

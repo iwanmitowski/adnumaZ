@@ -47,6 +47,21 @@ namespace adnumaZ.Controllers
             return View(torrent);
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Download([FromForm] int id)
+        {
+            var torrent = await dbContext.Torrents.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (torrent == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return PhysicalFile(torrent.TorrentFilePath, "application/octet-stream", torrent.Title + ".torrent");
+        }
+
+        [Authorize]
         public IActionResult Upload()
         {
             return View();
