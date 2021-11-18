@@ -31,11 +31,49 @@ namespace adnumaZ.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult ById(int id)
+        public async Task<IActionResult> ById(int id)
         {
-            return View(id);
+            var torrent = mapper.Map<TorrentViewModel>(
+                await dbContext.Torrents
+                .Include(x => x.Uploader)
+                .Include(x => x.Downloaders)
+                .FirstOrDefaultAsync(x => x.Id == id));
+
+            if (torrent == null)
+            {
+                return NotFound();
+            }
+
+            return View(torrent);
         }
 
+        public IActionResult Download(int? id)
+        {
+            return RedirectToAction(nameof(this.All));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Download([FromForm] int? id)
+        {
+            //When user is logged out and tries to download torrent, he is asked to register and redirected to /Download
+            //So the user is redirected to From Download to All
+            if (id == null)
+            {
+                return RedirectToAction(nameof(this.Download));
+            }
+
+            var torrent = await dbContext.Torrents.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (torrent == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return PhysicalFile(torrent.TorrentFilePath, "application/octet-stream", torrent.Title + ".torrent");
+        }
+
+        [Authorize]
         public IActionResult Upload()
         {
             return View();
