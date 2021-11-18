@@ -29,7 +29,7 @@
         @foreach (var torrent in Model.Torrents)
         {
             <tr>
-                <td><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></td>
+                <td><a asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id"><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></a></td>
                 <td>Temp Cat 1, Temp Cat 2</td>
                 <td>@torrent.Uploader</td>
                 <td>@torrent.Size</td>

@@ -20,10 +20,11 @@ namespace adnumaZ.Services.Mapping
                 .AfterMap<SetUserMappingAction>(); //Mapping the uploader
 
             this.CreateMap<Torrent, TorrentViewModel>()
-                .ForMember(x => x.Description, y => y.MapFrom(s => GetShortParameter(s.Description)))
+                .ForMember(x => x.DescriptionShort, y => y.MapFrom(s => GetShortParameter(s.Description)))
                 .ForMember(x => x.TitleShort, y => y.MapFrom(s => GetShortParameter(s.Title)))
                 .ForMember(x => x.Size, y => y.MapFrom(s => s.Size.ToString("F4")))
-                .ForMember(x => x.CreatedOn, y => y.MapFrom(s => s.CreatedOn.ToShortDateString()));
+                .ForMember(x => x.CreatedOn, y => y.MapFrom(s => s.CreatedOn.ToShortDateString()))
+                .ForMember(x => x.Uploader, y => y.MapFrom(s => s.Uploader));
 
             this.CreateMap<User, UserViewModel>()
                 .ForMember(x => x.DownloadedTorrentGBs, y => y.MapFrom(s => s.DownloadedTorrents.Sum(t => t.Size)))
