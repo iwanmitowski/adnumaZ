@@ -47,10 +47,22 @@ namespace adnumaZ.Controllers
             return View(torrent);
         }
 
+        public IActionResult Download()
+        {
+            return RedirectToAction(nameof(this.All));
+        }
+
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Download([FromForm] int id)
+        public async Task<IActionResult> Download([FromForm] int? id)
         {
+            //When user is logged out and tries to download torrent, he is asked to register and redirected to /Download
+            //So the user is redirected to From Download to All
+            if (id == null)
+            {
+                return RedirectToAction(nameof(this.Download));
+            }
+
             var torrent = await dbContext.Torrents.FirstOrDefaultAsync(x => x.Id == id);
 
             if (torrent == null)
