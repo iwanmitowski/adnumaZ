@@ -44,11 +44,11 @@
                             <div class="mt-2">
                                 @if (Model.IsApproved)
                                 {
-                                    <button id="disapprove" value="Dispprove" class="btn btn-danger" onclick="approve(@Model.Id, "disapprove")"> Disapprove </button>
+                                    <button id="approveButton" class="btn btn-danger" onclick="approve(@Model.Id)"> Disapprove </button>
                                 }
                                 else
                                 {
-                                    <button id="approve" value="Approve" class="btn btn-danger" onclick="approve(@Model.Id, "approve")"> Approve </button>
+                                    <button id="approveButton" class="btn btn-danger" onclick="approve(@Model.Id)"> Approve </button>
                                 }
                             </div>
                         }
@@ -160,15 +160,23 @@
         function approve(torrentId, condition) {
             var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
             var json = { torrentId: torrentId };
+            var isApproved = $("#approveButton").text();
+            console.log(isApproved);
             $.ajax({
-                url: "/api/" + condition,
+                url: "/api/changeApproval",
                 type: "POST",
                 data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
-                    //TODO TO CHANGE THE APPROVE BUTTON TO DISAPPROVE BUTTON
+                    if (isApproved == "Approve") {
+                        $("#approveButton").text("Disapprove");
+                    }
+                    else
+                    {
+                        $("#approveButton").text("Approve");
+                    }
                 }
             });
         }

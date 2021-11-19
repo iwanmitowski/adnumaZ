@@ -41,7 +41,7 @@
             var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
             var json = { torrentId: torrentId };
             $.ajax({
-                url: "/api/approve",
+                url: "/api/changeApproval",
                 type: "POST",
                 data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using adnumaZ.Data;
 using adnumaZ.Data.Seeding;
 using adnumaZ.Models;
@@ -45,9 +45,15 @@ namespace adnumaZ
                 })
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
+            services.AddAntiforgery(options =>
+            {
+                //ASP.NET Core - Workshop - февруари 2020 3:58:03
+                options.HeaderName = "X-CSRF-TOKEN"; //Add this so you can send the token with ajax !!!
             });
 
             services.Configure<CookiePolicyOptions>(

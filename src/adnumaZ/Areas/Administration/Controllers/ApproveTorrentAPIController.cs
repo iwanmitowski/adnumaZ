@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace adnumaZ.Areas.Administration.Controllers
 {
-    //[Authorize(Roles = Constants.AdministratorRoleName)]
-    
+    [Authorize(Roles = Constants.AdministratorRoleName)]
+    [Route("api/changeApproval")]
     [ApiController]
     public class ApproveTorrentAPIController : ControllerBase
     {
@@ -23,9 +23,8 @@ namespace adnumaZ.Areas.Administration.Controllers
             this.dbContext = dbContext;
         }
 
-        [Route("api/approve")]
         [HttpPost]
-        public async Task<ActionResult<ApproveTorrentResponseModel>> ApproveTorrent(ApproveTorrentInputModel input)
+        public async Task<ActionResult<ApproveTorrentResponseModel>> ChangeApproval(ApproveTorrentInputModel input)
         {
             var torrent = await dbContext.Torrents.FindAsync(input.TorrentId);
 
@@ -34,10 +33,11 @@ namespace adnumaZ.Areas.Administration.Controllers
                 return NotFound();
             }
 
-            torrent.IsApproved = true;
+            torrent.IsApproved = !torrent.IsApproved;
+            torrent.ModifiedOn = DateTime.UtcNow;
             await dbContext.SaveChangesAsync();
 
-            return new ApproveTorrentResponseModel() { IsApproved = true };
+            return new ApproveTorrentResponseModel() { IsApproved = torrent.IsApproved };
         }
     }
 }
