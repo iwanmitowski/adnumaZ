@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace adnumaZ.Areas.Administration.Controllers
 {
     //[Authorize(Roles = Constants.AdministratorRoleName)]
-    [Route("api/approve")]
+    
     [ApiController]
     public class ApproveTorrentAPIController : ControllerBase
     {
@@ -23,6 +23,7 @@ namespace adnumaZ.Areas.Administration.Controllers
             this.dbContext = dbContext;
         }
 
+        [Route("api/approve")]
         [HttpPost]
         public async Task<ActionResult<ApproveTorrentResponseModel>> ApproveTorrent(ApproveTorrentInputModel input)
         {
