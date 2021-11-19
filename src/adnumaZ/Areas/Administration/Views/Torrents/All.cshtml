@@ -21,7 +21,7 @@
             var torrentIdTag = $"torrent{@torrent.Id}";
 
             <tr id="@torrentIdTag">
-                <td><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></td>
+                <td><span data-toggle="tooltip" data-placement="top" title="@torrent.Title"><a asp-area="" asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id">@torrent.TitleShort</a></span></td>
                 <td>Temp Cat 1, Temp Cat 2</td>
                 <td>@torrent.Uploader</td>
                 <td>@torrent.Size</td>
@@ -41,7 +41,7 @@
             var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
             var json = { torrentId: torrentId };
             $.ajax({
-                url: "/api/approve",
+                url: "/api/changeApproval",
                 type: "POST",
                 data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",
