@@ -4,6 +4,7 @@ using adnumaZ.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks.Dataflow;
 
 namespace adnumaZ.Areas.Administration.Controllers
 {
@@ -19,9 +20,13 @@ namespace adnumaZ.Areas.Administration.Controllers
         }
         public IActionResult Index()
         {
-            var totalRegisteredUsers = dbContext.UserAccounts.Count();
-            var totalBannedUsers = dbContext.UserAccounts.Count(x => x.IsBanned);
-            var totalTorrents = dbContext.Torrents.Count();
+            var userAccounts = dbContext.UserAccounts;
+            var torrents = dbContext.Torrents;
+
+            var totalRegisteredUsers = userAccounts.Count();
+            var totalBannedUsers = userAccounts.Count(x => x.IsBanned);
+            var totalTorrents = torrents.Count();
+            var totalWaitingApproval = torrents.Count(x => !x.IsApproved);
             var totalUploadedGBs = dbContext.UserAccounts.Sum(x => x.UploadedTorrentGBs);
             var totalDownloadedGBs = dbContext.UserAccounts.Sum(x => x.DownloadedTorrentGBs);
             //TODO: Add total comments
@@ -31,6 +36,7 @@ namespace adnumaZ.Areas.Administration.Controllers
                 TotalRegisteredUsers = totalRegisteredUsers,
                 TotalBannedUsers = totalBannedUsers,
                 TotalTorrents = totalTorrents,
+                TotalWaitingApproval = totalWaitingApproval,
                 TotalUploadedGBs = totalUploadedGBs,
                 TotalDownloadedGBs = totalDownloadedGBs,
             };

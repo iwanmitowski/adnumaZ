@@ -4,35 +4,50 @@
 }
 <form id="torrentsForm" method="post">
 </form>
-<table class="table table-hover table-responsive-lg">
-    <thead>
-        <tr>
-            <th scope="col">Title</th>
-            <th>Categories</th>
-            <th scope="col">Uploader</th>
-            <th scope="col">Size</th>
-            <th scope="col">Approve</th>
-            <th scope="col">Uploaded on</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var torrent in Model)
-        {
-            var torrentIdTag = $"torrent{@torrent.Id}";
-
-            <tr id="@torrentIdTag">
-                <td><span data-toggle="tooltip" data-placement="top" title="@torrent.Title"><a asp-area="" asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id">@torrent.TitleShort</a></span></td>
-                <td>Temp Cat 1, Temp Cat 2</td>
-                <td>@torrent.Uploader</td>
-                <td>@torrent.Size</td>
-                <td>
-                    <button value="Approve" class="btn btn-success" onclick="approve(@torrent.Id)" > Approve </button>
-                </td>
-                <td>@torrent.CreatedOn</td>
+@if (Model.Any())
+{
+    <table class="table table-hover table-responsive-lg">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th>Categories</th>
+                <th scope="col">Uploader</th>
+                <th scope="col">Size</th>
+                <th scope="col">Approve</th>
+                <th scope="col">Uploaded on</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+
+            @foreach (var torrent in Model)
+            {
+                var torrentIdTag = $"torrent{@torrent.Id}";
+
+                <tr id="@torrentIdTag">
+                    <td><span data-toggle="tooltip" data-placement="top" title="@torrent.Title"><a asp-area="" asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id">@torrent.TitleShort</a></span></td>
+                    <td>Temp Cat 1, Temp Cat 2</td>
+                    <td>@torrent.Uploader</td>
+                    <td>@torrent.Size</td>
+                    <td>
+                        <button value="Approve" class="btn btn-success" onclick="approve(@torrent.Id)"> Approve </button>
+                    </td>
+                    <td>@torrent.CreatedOn</td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center">
+        <h1>Nothing to approve</h1>
+        <h2>Go to all <a asp-area="" asp-controller="Torrent" asp-action="All">torrents</a></h2>
+    </div>
+
+}
+
 
 @section Scripts
 {

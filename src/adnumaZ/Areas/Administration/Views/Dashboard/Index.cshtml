@@ -32,10 +32,18 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="mb-2">
-                                    <a asp-area="Administration" asp-controller="Torrents" asp-action="All">Torrents</a>
+                                    <a asp-area="" asp-controller="Torrent" asp-action="All">Torrents</a>
                                 </div>
                                 <span class="views-number">
                                     @Model.TotalTorrents
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <a asp-area="Administration" asp-controller="Torrents" asp-action="All">Waiting approval</a>
+                                </div>
+                                <span class="views-number">
+                                    @Model.TotalWaitingApproval
                                 </span>
                             </div>
                             <div class="col-md-2">
@@ -54,14 +62,6 @@
                                     @Model.TotalUploadedGBs
                                 </span>
                             </div>
-                            <div class="col-md-2">
-                                <div class="mb-2">
-                                    <p>Comments</p>
-                                </div>
-                                <span class="views-number">
-                                    TODO!!!
-                                </span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -69,4 +69,8 @@
         </div>
     </div>
 </div>
+
+<span class="views-number">
+    TODO with the recent comment!!!
+</span> 
 

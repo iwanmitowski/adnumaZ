@@ -147,7 +147,8 @@ namespace adnumaZ.Controllers
             }
 
             var torrents = mapper.Map<List<TorrentViewModel>>(query
-                .OrderByDescending(x => x.CreatedOn)
+                .OrderByDescending(x => x.ModifiedOn)
+                .ThenBy(x => x.CreatedOn)
                 .ThenByDescending(x => x.Id)
                 .Skip(skip)
                 .Take(TorrentsPerPage))
