@@ -33,6 +33,13 @@ namespace adnumaZ.Services.Mapping
                 .ForMember(x => x.UploadedTorrentsCount, y => y.MapFrom(s => s.UploadedTorrents.Count()))
                 .ForMember(x => x.FavouriteTorrentsCount, y => y.MapFrom(s => s.FavouriteTorrents.Count()))
                 .AfterMap<SetIsAdminMappingAction>();
+
+            this.CreateMap<CommentInputModel, Comment>()
+                .ForMember(x=>x.Id, y=> y.MapFrom(s=> Guid.NewGuid().ToString()))
+                .ForMember(x => x.CreatedOn, y => y.MapFrom(s => DateTime.UtcNow))
+                .AfterMap<SetUserMappingAction>(); //Mapping the commenter
+
+            this.CreateMap<Comment, CommentViewModel>();
         }
 
         private string GetShortParameter(string i) =>

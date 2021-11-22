@@ -47,5 +47,7 @@ namespace adnumaZ.Models
         public virtual ICollection<Torrent> DownloadedTorrents { get; set; }
 
         public virtual ICollection<Torrent> FavouriteTorrents { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

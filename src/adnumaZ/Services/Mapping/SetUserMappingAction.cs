@@ -8,7 +8,8 @@ using System;
 namespace adnumaZ.Services.Mapping
 {
     //https://docs.automapper.org/en/stable/Before-and-after-map-actions.html#asp-net-core-and-automapper-extensions-microsoft-dependencyinjection
-    public class SetUserMappingAction : IMappingAction<UploadTorrentViewModel, Torrent>
+    public class SetUserMappingAction : IMappingAction<UploadTorrentViewModel, Torrent>,
+                                        IMappingAction<CommentInputModel, Comment>
     {
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserManager<User> userManager;
@@ -21,8 +22,15 @@ namespace adnumaZ.Services.Mapping
 
         public void Process(UploadTorrentViewModel source, Torrent destination, ResolutionContext context)
         {
-            destination.Uploader = userManager.GetUserAsync(httpContextAccessor.HttpContext.User).Result;
+            destination.Uploader = GetUserAsync();
         }
+
+        public void Process(CommentInputModel source, Comment destination, ResolutionContext context)
+        {
+            destination.User = GetUserAsync();
+        }
+
+        private User GetUserAsync() => userManager.GetUserAsync(httpContextAccessor.HttpContext.User).Result;
     }
 
 }

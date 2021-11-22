@@ -1,4 +1,5 @@
 ﻿using adnumaZ.Models;
+using System.Collections.Generic;
 
 namespace adnumaZ.ViewModels
 {
@@ -27,5 +28,7 @@ namespace adnumaZ.ViewModels
         public bool IsApproved { get; set; }
 
         public int DownloadersCount { get; set; }
+
+        public IEnumerable<CommentViewModel> Comments { get; set; }
     }
 }

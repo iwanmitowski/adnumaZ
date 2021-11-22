@@ -1,5 +1,56 @@
 ﻿@model TorrentViewModel
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+@{
+
+    void DisplayComments(string parentId)
+    {
+        var comments = Model.Comments.Where(x => x.ParentId == parentId);
+
+        if (!Model.Comments.Any() || !comments.Any())
+        {
+            return;
+        }
+
+        @foreach (var comment in comments)
+        {
+            <div class="container-fluid mt-100">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="m-3">
+                                <div class="media flex-wrap w-100 align-items-center">
+                                    <img src="@comment.UserImageUrl" class="d-block ui-w-50 rounded-circle img-sm" alt="User Profile pic">
+                                    <div class="media-body ml-3">
+                                        @comment.UserUserName
+                                        <div class="text-muted small">
+                                            @*<time datetime="@comment.CreatedOn.ToString("O")"></time>*@
+                                            <time>@comment.CreatedOn</time>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-muted small ml-3">
+                                        @if (this.User.Identity.IsAuthenticated)
+                                        {
+                                            <div> <button type="button" class="btn btn-secondary" onclick="showAddCommentForm('@comment.Id')">Answer</button> </div>
+                                        }
+                                    </div>
+                                </div>
+                                <hr />
+
+                            </div>
+                            <div class="card-body">
+                                <article class="mb-3">
+                                    @comment.Content
+                                </article>
+                                @{ DisplayComments(comment.Id); }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
 
 <div id="main-content" class="blog-page">
     <div class="container">
@@ -54,54 +105,27 @@
                         }
                     </div>
                 </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>Comments TODO!</h2>
-                    </div>
-                    <div class="body">
-                        <ul class="comment-reply list-unstyled">
-                            @*foreach*@
-                            <li class="row clearfix">
-                                <div class="icon-box col-md-2 col-4"><img class="img-fluid img-thumbnail" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Awesome Image"></div>
-                                <div class="text-box col-md-10 col-8 p-l-0 p-r0">
-                                    <h5 class="m-b-0">Gigi Hadid </h5>
-                                    <p>Why are there so many tutorials on how to decouple WordPress? how fast and easy it is to get it running (and keep it running!) and its massive ecosystem. </p>
-                                    <ul class="list-inline">
-                                        <li><a href="javascript:void(0);">Mar 09 2018</a></li>
-                                        <li><a href="javascript:void(0);">Reply</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>Leave a comment</h2>
-                    </div>
-                    <div class="body">
-                        <div class="comment-form">
-                            <form class="row clearfix">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Your Name">
+                <div class=".bg-light">
+                    <div class="card">
+                        <div class="header">
+                            <h3>Leave a comment</h3>
+                        </div>
+                        <div class="body">
+                            <div class="comment-form">
+                                <form class="row clearfix" id="AddCommentForm" asp-controller="Comment" asp-action="Create" method="post">
+                                    <input type="hidden" name="TorrentId" value="@this.Model.Id" />
+                                    <input type="hidden" name="ParentId" value="0" />
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <textarea rows="4" class="form-control no-resize" placeholder="Please type what you want..."></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-block btn-primary">Submit</button>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Email Address">
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <textarea rows="4" class="form-control no-resize" placeholder="Please type what you want..."></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-block btn-primary">SUBMIT</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
+                    @{ DisplayComments(null);}
                 </div>
             </div>
             <div class="col-lg-4 col-md-12 right-box">
@@ -129,24 +153,7 @@
                         <h2>Popular Posts</h2>
                     </div>
                     <div class="body widget popular-post">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="single_post">
-                                    <p class="m-b-0">Apple Introduces Search Ads Basic</p>
-                                    <span>jun 22, 2018</span>
-                                    <div class="img-post">
-                                        <img src="https://via.placeholder.com/280x280/87CEFA/000000" alt="Awesome Image">
-                                    </div>
-                                </div>
-                                <div class="single_post">
-                                    <p class="m-b-0">new rules, more cars, more races</p>
-                                    <span>jun 8, 2018</span>
-                                    <div class="img-post">
-                                        <img src="https://via.placeholder.com/280x280/87CEFA/000000" alt="Awesome Image">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -157,6 +164,13 @@
 @section Scripts
 {
     <script>
+        function showAddCommentForm(parentId) {
+            $("#AddCommentForm input[name='ParentId']").val(String(parentId));
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#AddCommentForm").offset().top
+            }, 1000);
+        }
+
         function approve(torrentId, condition) {
             var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
             var json = { torrentId: torrentId };
@@ -173,8 +187,7 @@
                     if (isApproved == "Approve") {
                         $("#approveButton").text("Disapprove");
                     }
-                    else
-                    {
+                    else {
                         $("#approveButton").text("Approve");
                     }
                 }
