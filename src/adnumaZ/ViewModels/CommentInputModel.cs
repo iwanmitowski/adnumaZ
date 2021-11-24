@@ -14,9 +14,13 @@ namespace adnumaZ.ViewModels
         [Required]
         public string Content { get; set; }
 
+        public string UserId { get; set; }
+
+        public User User { get; set; }
+
         public int TorrentId { get; set; }
 
         public Torrent Torrent { get; set; }
-        public User User { get; set; }
+
     }
 }

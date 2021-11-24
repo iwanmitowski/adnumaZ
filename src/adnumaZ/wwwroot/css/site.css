@@ -422,7 +422,10 @@ a.forum-item-title {
     }
 }
 
-
+.img-sm{
+    width:48px;
+    height: 48px;
+}
 
 
 .ibox {

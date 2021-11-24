@@ -12,6 +12,7 @@ namespace adnumaZ.Models
         {
             this.Downloaders = new HashSet<User>();
             this.FavouritedByUsers = new HashSet<User>();
+            this.Comments = new HashSet<Comment>();
         }
         public int Id { get; set; }
 

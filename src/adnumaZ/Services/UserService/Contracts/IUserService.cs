@@ -7,6 +7,7 @@ namespace adnumaZ.Services.UserService.Contracts
     public interface IUserService
     {
         public Task<User> GetUser(string userId);
+        public Task<User> GetCurrentUserAsync();
         public Task ChangeBanCondition(string userId, [Optional] string reason);
         public Task PromoteToAdmin(string userId);
         public Task DemoteToUser(string userId);

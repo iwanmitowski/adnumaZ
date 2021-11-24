@@ -30,12 +30,12 @@ namespace adnumaZ.Controllers
                 .Include(x => x.FavouriteTorrents)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            var user = mapper.Map<UserViewModel>(userFromDb);
-
-            if (user == null)
+            if (userFromDb == null)
             {
                 return NotFound();
             }
+
+            var user = mapper.Map<UserViewModel>(userFromDb);
 
             return View(user);
         }

@@ -11,7 +11,6 @@ namespace adnumaZ.Models
     {
         public Comment()
         {
-            //this.Id = new Guid().ToString();
             this.ChildComments = new HashSet<Comment>();
         }
         public string Id { get; set; }

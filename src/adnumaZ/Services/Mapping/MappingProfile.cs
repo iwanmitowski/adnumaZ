@@ -17,7 +17,7 @@ namespace adnumaZ.Services.Mapping
             this.CreateMap<UploadTorrentViewModel, Torrent>()
                 .ForMember(x => x.CreatedOn, y => y.MapFrom(s => DateTime.UtcNow))
                 .ForMember(x => x.Size, y => y.MapFrom(s => s.File.Length / 1024 / 1024.0))
-                .AfterMap<SetUserMappingAction>(); //Mapping the uploader
+                .AfterMap<SetModelMappingAction>(); //Mapping the uploader
 
             this.CreateMap<Torrent, TorrentViewModel>()
                 .ForMember(x => x.DescriptionShort, y => y.MapFrom(s => GetShortParameter(s.Description)))
@@ -35,11 +35,12 @@ namespace adnumaZ.Services.Mapping
                 .AfterMap<SetIsAdminMappingAction>();
 
             this.CreateMap<CommentInputModel, Comment>()
-                .ForMember(x=>x.Id, y=> y.MapFrom(s=> Guid.NewGuid().ToString()))
+                .ForMember(x => x.Id, y => y.MapFrom(s => Guid.NewGuid().ToString()))
                 .ForMember(x => x.CreatedOn, y => y.MapFrom(s => DateTime.UtcNow))
-                .AfterMap<SetUserMappingAction>(); //Mapping the commenter
+                .AfterMap<SetModelMappingAction>(); //Mapping the commenter
 
-            this.CreateMap<Comment, CommentViewModel>();
+            this.CreateMap<Comment, CommentViewModel>()
+                .AfterMap<SetModelMappingAction>();
         }
 
         private string GetShortParameter(string i) =>
