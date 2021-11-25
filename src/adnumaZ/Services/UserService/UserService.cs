@@ -2,6 +2,7 @@
 using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.Services.UserService.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,16 +17,23 @@ namespace adnumaZ.Services.UserService
     {
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<User> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public UserService(ApplicationDbContext dbContext ,UserManager<User> userManager)
+        public UserService(ApplicationDbContext dbContext ,UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<User> GetUser(string userId)
         {
             return await userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<User> GetCurrentUserAsync()
+        {
+            return await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
         }
 
         public async Task ChangeBanCondition(string userId, [Optional] string banReason)

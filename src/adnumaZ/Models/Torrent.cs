@@ -12,6 +12,7 @@ namespace adnumaZ.Models
         {
             this.Downloaders = new HashSet<User>();
             this.FavouritedByUsers = new HashSet<User>();
+            this.Comments = new HashSet<Comment>();
         }
         public int Id { get; set; }
 
@@ -52,5 +53,7 @@ namespace adnumaZ.Models
 
         [InverseProperty(nameof(User.FavouriteTorrents))]
         public virtual ICollection<User> FavouritedByUsers { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

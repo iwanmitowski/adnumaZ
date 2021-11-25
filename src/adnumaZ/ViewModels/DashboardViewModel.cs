@@ -13,5 +13,7 @@ namespace adnumaZ.ViewModels
         public int TotalWaitingApproval { get; set; }
         public double TotalUploadedGBs { get; set; }
         public double TotalDownloadedGBs { get; set; }
+
+        public IEnumerable<CommentViewModel> AllComments { get; set; }
     }
 }

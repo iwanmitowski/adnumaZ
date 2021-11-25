@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using adnumaZ.Services.UserService.Contracts;
 using adnumaZ.Services.UserService;
+using adnumaZ.Services.CommentService.Contracts;
+using adnumaZ.Services.CommentService;
 
 namespace adnumaZ
 {
@@ -37,6 +39,7 @@ namespace adnumaZ
                 options.UseSqlServer(sqlConnectionString));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICommentService, CommentService>();
 
             services.AddDefaultIdentity<User>(
                 options =>

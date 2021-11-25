@@ -1,5 +1,5 @@
 ﻿@model DashboardViewModel
-<div class="container">
+<div class="container mb-4">
     <div class="row">
         <div class="col-lg-12">
             <div class="wrapper wrapper-content animated fadeInRight">
@@ -70,7 +70,59 @@
     </div>
 </div>
 
-<span class="views-number">
-    TODO with the recent comment!!!
-</span> 
+@foreach (var comment in Model.AllComments)
+{
+    <div class="container-fluid mt-100">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="ml-3 mt-3 mr-3">
+                        <div class="media flex-wrap w-100 align-items-center">
+                            <img src="@comment.UserImageUrl" class="d-block ui-w-50 rounded-circle img-sm" alt="User Profile pic">
+                            <div class="media-body ml-3">
+                                @comment.UserUserName
+                                <div class="text-muted small">
+                                    @*<time datetime="@comment.CreatedOn.ToString("O")"></time>*@
+                                    <time>@comment.CreatedOn</time>
+                                </div>
+                            </div>
+
+                            @if (!comment.IsDeleted)
+                            {
+                                <div class="text-muted small ml-3">
+                                    <div>
+                                        <form asp-area="" asp-controller="Comment" asp-action="Delete" method="post" onSubmit="return confirm('Are you sure you wish to delete that comment ?');">
+                                            <input type="hidden" name="CommentId" value="@comment.Id" />
+                                            <input type="hidden" name="TorrentId" value="@comment.TorrentId" />
+                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="text-muted small ml-3">
+                                    <div> <a class="btn btn-secondary" asp-area="" asp-controller="Torrent" asp-action="ById" asp-route-id="@comment.TorrentId">Torrent #@comment.TorrentId</a></div>
+                                </div>
+                            }
+
+                        </div>
+                        <hr />
+
+                    </div>
+                    <div class="card-body">
+                        <article class="mb-3">
+
+                            @if (comment.IsDeleted)
+                            {
+                                <h3 class="text-danger">This comment is deleted</h3>
+                            }
+                            <p>@comment.Content</p>
+
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
 

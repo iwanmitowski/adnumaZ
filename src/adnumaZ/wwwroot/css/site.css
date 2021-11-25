@@ -4,6 +4,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 /* Custom styles
 -------------------------------------------------- */
+
 body {
     background: #eee;
 }
@@ -422,8 +423,10 @@ a.forum-item-title {
     }
 }
 
-
-
+.img-sm{
+    width:48px;
+    height: 48px;
+}
 
 
 .ibox {
