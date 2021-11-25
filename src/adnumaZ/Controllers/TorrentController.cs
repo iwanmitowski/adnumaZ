@@ -37,7 +37,7 @@ namespace adnumaZ.Controllers
                 await dbContext.Torrents
                 .Include(x => x.Uploader)
                 .Include(x => x.Downloaders)
-                .Include(x => x.Comments)
+                .Include(x => x.Comments.OrderBy(x=>x.IsDeleted))
                 .FirstOrDefaultAsync(x => x.Id == id));
 
             if (torrent == null)

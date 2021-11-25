@@ -1,6 +1,7 @@
 ﻿using adnumaZ.Data;
 using adnumaZ.Data.Migrations;
 using adnumaZ.Models;
+using adnumaZ.Services.CommentService.Contracts;
 using adnumaZ.Services.UserService.Contracts;
 using adnumaZ.ViewModels;
 using AutoMapper;
@@ -20,12 +21,14 @@ namespace adnumaZ.Controllers
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
         private readonly IUserService userService;
+        private readonly ICommentService commentService;
 
-        public CommentController(ApplicationDbContext dbContext, IMapper mapper, IUserService userService)
+        public CommentController(ApplicationDbContext dbContext, IMapper mapper, IUserService userService, ICommentService commentService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.userService = userService;
+            this.commentService = commentService;
         }
 
         [HttpPost]
@@ -39,21 +42,27 @@ namespace adnumaZ.Controllers
                                       new { id = input.TorrentId });
             }
 
-            var comment = mapper.Map<Comment>(input);
-
-            if (comment.Parent != null)
+            try
             {
-                comment.Parent.ChildComments.Add(comment);
+                var comment = mapper.Map<Comment>(input);
+
+                commentService.AddCommentToParentChildComments(comment);
+
+                commentService.AddCommentToTorrent(comment);
+
+                var user = await dbContext.UserAccounts
+                    .Include(x => x.Comments)
+                    .FirstOrDefaultAsync(
+                        x => x.Equals(userService.GetCurrentUserAsync().Result));
+
+                commentService.AddCommentToUser(comment, user);
+
+                await dbContext.SaveChangesAsync();
             }
-
-            comment.Torrent.Comments.Add(comment);
-            var user = await dbContext.UserAccounts
-                .Include(x=>x.Comments)
-                .FirstOrDefaultAsync(
-                    x=>x.Equals(userService.GetCurrentUserAsync().Result));
-            user.Comments.Add(comment);
-
-            await dbContext.SaveChangesAsync();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(TorrentController.ById),
                                     nameof(TorrentController).Replace("Controller", string.Empty),
@@ -64,14 +73,9 @@ namespace adnumaZ.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(CommentDeleteModel input)
         {
-            var comment = await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == input.CommentId);
+            var comment = await commentService.GetCommentByIdAsync(input.CommentId);
 
-            comment.IsDeleted = true;
-            comment.DeletedOn = DateTime.UtcNow;
-            comment.ModifiedOn = comment.DeletedOn;
-
-            await dbContext.SaveChangesAsync();
-
+            await commentService.SetCommentAsDeletedAsync(comment);
 
             return RedirectToAction(nameof(TorrentController.ById),
                                     nameof(TorrentController).Replace("Controller", string.Empty),
