@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card mb-4">
-                            <div class="m-3">
+                            <div class="ml-4 mt-3 mr-3">
                                 <div class="media flex-wrap w-100 align-items-center">
                                     <img src="@comment.UserImageUrl" class="d-block ui-w-50 rounded-circle img-sm" alt="User Profile pic">
                                     <div class="media-body ml-3">
@@ -40,10 +40,10 @@
                                             @if (this.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value == comment.UserId)
                                             {
                                                 <div>
-                                                    <form asp-controller="Comment" asp-action="Delete" method="post">
+                                                    <form asp-controller="Comment" asp-action="Delete" method="post" onSubmit="return confirm('Are you sure you wish to delete your comment ?');">
                                                         <input type="hidden" name="CommentId" value="@comment.Id" />
                                                         <input type="hidden" name="TorrentId" value="@Model.Id" />
-                                                        <input type="submit" class="btn btn-danger" value="Delete">
+                                                        <input type="submit" class="btn btn-danger" value="Delete" >
                                                     </form>
                                                 </div>
                                             }
