@@ -31,6 +31,12 @@ namespace adnumaZ.Controllers
             this.commentService = commentService;
         }
 
+        public IActionResult Create()
+        {
+            return RedirectToAction(nameof(TorrentController.All),
+                                    nameof(TorrentController).Replace("Controller", string.Empty));
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(CommentInputModel input)
@@ -38,8 +44,8 @@ namespace adnumaZ.Controllers
             if (string.IsNullOrWhiteSpace(input.Content))
             {
                 return RedirectToAction(nameof(TorrentController.ById),
-                                      nameof(TorrentController).Replace("Controller", string.Empty),
-                                      new { id = input.TorrentId });
+                                        nameof(TorrentController).Replace("Controller", string.Empty),
+                                        new { id = input.TorrentId });
             }
 
             try

@@ -158,6 +158,11 @@ namespace adnumaZ.Controllers
             var torrentCount = query.Count();
             var pagesCount = (int)Math.Ceiling(torrentCount / (double)TorrentsPerPage);
 
+            if (id > pagesCount)
+            {
+                return RedirectToAction(nameof(this.All), new { id = pagesCount, search = search });
+            }
+
             var viewModel = new TorrentListViewModel()
             {
                 Torrents = torrents,
