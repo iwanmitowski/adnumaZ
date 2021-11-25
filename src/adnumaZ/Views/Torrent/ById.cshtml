@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card mb-4">
-                            <div class="ml-4 mt-3 mr-3">
+                            <div class="ml-3 mt-3 mr-3">
                                 <div class="media flex-wrap w-100 align-items-center">
                                     <img src="@comment.UserImageUrl" class="d-block ui-w-50 rounded-circle img-sm" alt="User Profile pic">
                                     <div class="media-body ml-3">
@@ -31,21 +31,21 @@
                                     @if (!comment.IsDeleted)
                                     {
                                         <div class="text-muted small ml-3">
-                                            @if (this.User.Identity.IsAuthenticated)
-                                            {
-                                                <div> <button type="button" class="btn btn-secondary" onclick="showAddCommentForm('@comment.Id')">Answer</button> </div>
-                                            }
-                                        </div>
-                                        <div class="text-muted small ml-3">
                                             @if (this.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value == comment.UserId)
                                             {
                                                 <div>
                                                     <form asp-controller="Comment" asp-action="Delete" method="post" onSubmit="return confirm('Are you sure you wish to delete your comment ?');">
                                                         <input type="hidden" name="CommentId" value="@comment.Id" />
                                                         <input type="hidden" name="TorrentId" value="@Model.Id" />
-                                                        <input type="submit" class="btn btn-danger" value="Delete" >
+                                                        <input type="submit" class="btn btn-danger" value="Delete">
                                                     </form>
                                                 </div>
+                                            }
+                                        </div>
+                                        <div class="text-muted small ml-3">
+                                            @if (this.User.Identity.IsAuthenticated)
+                                            {
+                                                <div> <button type="button" class="btn btn-secondary" onclick="showAddCommentForm('@comment.Id')">Answer</button> </div>
                                             }
                                         </div>
                                     }
@@ -132,27 +132,27 @@
                     </div>
                 </div>
                 <div class=".bg-light">
-                <div class="card">
-                    <div class="header">
-                        <h3>Leave a comment</h3>
-                    </div>
-                    <div class="body">
-                        <div class="comment-form">
-                            <form class="row clearfix" id="AddCommentForm" asp-controller="Comment" asp-action="Create" method="post">
-                                <input type="hidden" name="TorrentId" value="@this.Model.Id" />
-                                <input type="hidden" name="ParentId" value="" />
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <textarea rows="4" name="Content" class="form-control no-resize" required placeholder="Tell us what do you think..."></textarea>
+                    <div class="card">
+                        <div class="header">
+                            <h3>Leave a comment</h3>
+                        </div>
+                        <div class="body">
+                            <div class="comment-form">
+                                <form class="row clearfix" id="AddCommentForm" asp-controller="Comment" asp-action="Create" method="post">
+                                    <input type="hidden" name="TorrentId" value="@this.Model.Id" />
+                                    <input type="hidden" name="ParentId" value="" />
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <textarea rows="4" name="Content" class="form-control no-resize" required placeholder="Tell us what do you think..."></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-block btn-primary">Comment</button>
                                     </div>
-                                    <button type="submit" class="btn btn-block btn-primary">Comment</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
+
                 </div>
-                
-            </div>
             </div>
             <div class="col-lg-4 col-md-12 right-box">
                 <div class="card">
@@ -186,9 +186,9 @@
     </div>
 </div>
 <div class="col-lg-8 col-md-12 left-box">
-@{
-                    await DisplayComments(null);
-                }
+    @{
+        await DisplayComments(null);
+    }
 </div>
 
 @section Scripts
