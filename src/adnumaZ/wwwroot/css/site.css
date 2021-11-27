@@ -428,6 +428,29 @@ a.forum-item-title {
     height: 48px;
 }
 
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+    background-image: url("");
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+}
+
+canvas {
+    display: block;
+    vertical-align: bottom;
+}
+
+.centering {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
 
 .ibox {
     clear: both;
@@ -529,9 +552,10 @@ a.forum-item-title {
 }
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: #0069d9 !important;
 }
 
 /* Provide sufficient contrast against white background */

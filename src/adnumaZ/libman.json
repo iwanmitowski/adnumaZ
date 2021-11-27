@@ -35,6 +35,13 @@
         "dist/jquery.validate.unobtrusive.js",
         "dist/jquery.validate.unobtrusive.min.js"
       ]
+    },
+    {
+      "library": "particles.js@2.0.0",
+      "destination": "wwwroot/lib/particles.js/",
+      "files": [
+        "particles.min.js"
+      ]
     }
   ]
 }
