@@ -28,6 +28,8 @@ namespace adnumaZ.ViewModels
         public bool IsApproved { get; set; }
 
         public int DownloadersCount { get; set; }
+        
+        public string Hash { get; set; }
 
         public IEnumerable<CommentViewModel> Comments { get; set; }
     }

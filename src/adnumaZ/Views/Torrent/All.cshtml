@@ -22,19 +22,31 @@
             <th>Categories</th>
             <th scope="col">Uploader</th>
             <th scope="col">Size</th>
+            <th scope="col">Seeders</th>
+            <th scope="col">Peers</th>
             <th scope="col">Uploaded on</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var torrent in Model.Torrents)
         {
-            <tr>
-                <td><a asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id"><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></a></td>
-                <td>Temp Cat 1, Temp Cat 2</td>
-                <td>@torrent.Uploader</td>
-                <td>@torrent.Size</td>
-                <td>@torrent.CreatedOn</td>
-            </tr>
+        <tr>
+            <td><a asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id"><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></a></td>
+            <td>Temp Cat 1, Temp Cat 2</td>
+            <td>@torrent.Uploader</td>
+            <td>@torrent.Size.ToString("F2") GBs</td>
+            @if (Model.TorrentSeedData.TryGetValue(torrent.Hash, out var tsd))
+            {
+                <td>@tsd.Seeders</td>
+                <td>@tsd.Peers</td>
+            }
+            else
+            {
+                <td>N/A</td>
+                <td>N/A</td>
+            }
+            <td>@torrent.CreatedOn</td>
+        </tr>
         }
     </tbody>
 </table>

@@ -15,7 +15,7 @@
             <tr>
                 <td><strong><a asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id"><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></a></strong></td>
                 <td>@torrent.Uploader</td>
-                <td>@torrent.Size</td>
+                <td>@torrent.Size.ToString("F2") GBs</td>
                 <td>@torrent.CreatedOn</td>
             </tr>
         }

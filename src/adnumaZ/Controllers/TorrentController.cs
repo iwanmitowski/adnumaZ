@@ -1,9 +1,10 @@
-﻿using adnumaZ.Areas.Administration.Controllers;
+using adnumaZ.Areas.Administration.Controllers;
 using adnumaZ.Common.Constants;
 using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.ViewModels;
 using AutoMapper;
+using BencodeNET.Parsing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,14 +24,17 @@ namespace adnumaZ.Controllers
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
+        private readonly IConfiguration configuration;
 
         public TorrentController(ApplicationDbContext dbContext,
             IMapper mapper,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IConfiguration configuration)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.userManager = userManager;
+            this.configuration = configuration;
         }
 
         public async Task<IActionResult> ById(int id)
@@ -91,20 +95,27 @@ namespace adnumaZ.Controllers
                 return View(torrentDTO);
             }
 
+            try
+            {
+                var parser = new BencodeParser();
+
+                var torrentStream = torrentDTO.File.OpenReadStream();
+                var torrentObject = await parser.ParseAsync<BencodeNET.Torrents.Torrent>(torrentStream);
+
             var torrent = mapper.Map<Torrent>(torrentDTO);
+                torrent.Size = torrentObject.Files.Sum(f => f.FileSize) / 1024d / 1024d / 1024d;
+                torrent.Hash = torrentObject.GetInfoHash().ToLower();
 
             await dbContext.AddAsync(torrent);
 
             int fileNumber = dbContext.Torrents.Count() + 1;
             var fileName = "File" + fileNumber + ".torrent";
-            var saveToPath = Path.Combine("D:", "DemoCodes", "temp", fileName);
+                var saveToPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 
             torrent.TorrentFilePath = saveToPath;
 
             var user = await userManager.GetUserAsync(HttpContext.User);
 
-            try
-            {
                 using (Stream fileStream = new FileStream(saveToPath, FileMode.Create))
                 {
                     await torrentDTO.File.CopyToAsync(fileStream);
@@ -167,9 +178,45 @@ namespace adnumaZ.Controllers
                 return RedirectToAction(nameof(this.All), new { id = pagesCount, search = search });
             }
 
+            var torrentSeedDataTasks = new List<Task<TorrentSeedData>>();
+            var trackerApiPath = configuration["TrackerApiPath"];
+            foreach (var torrent in torrents)
+            {
+                if (configuration["TrackerApiPath"] == null)
+                {
+                    torrentSeedDataTasks.Add(Task.FromResult(new TorrentSeedData() { Hash = torrent.Hash }));
+                }
+                else
+                {
+                    var task = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            var httpClient = new HttpClient();
+
+                            var response = await httpClient.GetStringAsync($"{trackerApiPath}/t/{torrent.Hash}");
+
+                            var seedData = JsonConvert.DeserializeObject<TorrentSeedData>(response);
+
+                            return seedData;
+                        }
+                        catch (Exception)
+                        {
+                            return new TorrentSeedData() { Hash = torrent.Hash, Seeders = 0, Peers = 0 };
+                        }
+                    });
+
+                    torrentSeedDataTasks.Add(task);
+                }
+            }
+
+            var torrentSeedData = torrentSeedDataTasks
+                .ToDictionary(t => t.Result.Hash, t => t.Result);
+
             var viewModel = new TorrentListViewModel()
             {
                 Torrents = torrents,
+                TorrentSeedData = torrentSeedData,
                 CurrentPage = id,
                 TorrentCount = torrentCount,
                 PagesCount = pagesCount,

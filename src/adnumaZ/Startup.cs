@@ -68,6 +68,8 @@ namespace adnumaZ
 
             // Auto Mapper Configurations
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

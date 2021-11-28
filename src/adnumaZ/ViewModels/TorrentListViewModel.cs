@@ -1,4 +1,5 @@
-﻿using System;
+﻿using adnumaZ.Common.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace adnumaZ.ViewModels
     public class TorrentListViewModel
     {
         public List<TorrentViewModel> Torrents { get; set; }
+        
+        public Dictionary<string, TorrentSeedData> TorrentSeedData { get; set; }
 
         public int PreviousPage => CurrentPage - 1;
 
