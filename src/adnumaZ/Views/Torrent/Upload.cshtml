@@ -1,5 +1,8 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @model UploadTorrentViewModel
+@{
+    ViewData["Title"] = "Upload";
+}
 
 <div>
     <form class="d-flex justify-content-center align-baseline" method="post" asp-controller="Torrent" , asp-action="Upload" enctype="multipart/form-data">
