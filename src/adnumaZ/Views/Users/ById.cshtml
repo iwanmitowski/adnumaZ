@@ -1,6 +1,7 @@
 ﻿@model UserViewModel
 @{
     ViewData["Title"] = "User profile";
+    var usr = this.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 }
 
 <div class="container rounded bg-white mt-5 mb-5">
@@ -8,7 +9,7 @@
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                 <img class="rounded-circle mt-5" width="150px" src="@Model.ImageUrl"><span class="font-weight-bold mt-2">@Model.UserName</span><span class="text-black-50">@Model.Email</span><span> </span>
-                @if (User.IsInRole(adnumaZ.Common.Constants.Constants.AdministratorRoleName))
+                @if (User.IsInRole(adnumaZ.Common.Constants.Constants.AdministratorRoleName) && usr != @Model.Id)
                 {
                     @if (Model.IsBanned)
                     {
