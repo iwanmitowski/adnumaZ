@@ -23,7 +23,9 @@ namespace adnumaZ.ViewComponents
         {
             var viewModel = mapper
                 .Map<IEnumerable<TorrentViewModel>>(
-                    dbContext.Torrents.Include(x => x.Uploader)
+                    dbContext.Torrents
+                             .Where(x=>x.IsApproved)
+                             .Include(x => x.Uploader)
                              .OrderByDescending(x => x.CreatedOn)
                              .Take(5));
 

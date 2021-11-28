@@ -1,4 +1,6 @@
-﻿using adnumaZ.Data;
+﻿using adnumaZ.Areas.Administration.Controllers;
+using adnumaZ.Common.Constants;
+using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.ViewModels;
 using AutoMapper;
@@ -64,7 +66,7 @@ namespace adnumaZ.Controllers
                 return RedirectToAction(nameof(this.Download));
             }
 
-            var torrent = await dbContext.Torrents.FirstOrDefaultAsync(x => x.Id == id);
+            var torrent = await dbContext.Torrents.FindAsync(id);
 
             if (torrent == null)
             {
@@ -173,6 +175,36 @@ namespace adnumaZ.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var torrent = mapper.Map<EditTorrentViewModel>(await dbContext.Torrents.FindAsync(id));
+
+            return PartialView("_EditTorrentPartial", torrent);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditTorrentViewModel model)
+        {
+            var torrent = await dbContext.Torrents.FindAsync(model.Id);
+
+            torrent.ModifiedOn = DateTime.UtcNow;
+            torrent.Title = model.Title;
+            torrent.Description = model.Description;
+            torrent.ImageUrl = model.ImageUrl;
+            torrent.IsApproved = false;
+
+            await dbContext.SaveChangesAsync();
+
+            if (this.User.IsInRole(Constants.AdministratorRoleName))
+            {
+                return RedirectToAction(nameof(TorrentsController.All),
+                                        nameof(TorrentsController).Replace("Controller", string.Empty),
+                                        new { area = "Administration" });
+            }
+
+            return View(nameof(this.All));
         }
     }
 }

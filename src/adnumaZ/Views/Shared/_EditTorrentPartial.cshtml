@@ -1,0 +1,41 @@
+﻿@model EditTorrentViewModel
+
+<div class="modal fade" id="editTorrent">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="editTorrentLabel">Edit torrent</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Torrent" asp-action="Edit">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="form-group">
+                        <label asp-for="Title" class="col-form-label d-block"></label>
+                        <input asp-for="Title" id="TitleVal" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger d-block"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="col-form-label d-block"></label>
+                        <textarea asp-for="Description" id="DescrVal" rows="8" cols="70" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger d-block"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ImageUrl" class="col-form-label d-block"></label>
+                        <input asp-for="ImageUrl" id="ImgUrlVal" class="form-control" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal" >Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+<partial name="_ValidationScriptsPartial" />
+}

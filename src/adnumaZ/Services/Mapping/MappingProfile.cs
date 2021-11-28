@@ -41,6 +41,12 @@ namespace adnumaZ.Services.Mapping
 
             this.CreateMap<Comment, CommentViewModel>()
                 .AfterMap<SetModelMappingAction>();
+
+            this.CreateMap<Torrent, EditTorrentViewModel>();
+
+            this.CreateMap<EditTorrentViewModel, Torrent>()
+                .ForMember(x => x.ModifiedOn, y => y.MapFrom(s => DateTime.UtcNow))
+                .ForMember(x => x.IsApproved, y => y.MapFrom(s => false));
         }
 
         private string GetShortParameter(string i) =>
