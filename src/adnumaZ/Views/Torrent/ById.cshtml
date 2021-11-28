@@ -1,4 +1,7 @@
 ﻿@model TorrentViewModel
+@{
+    ViewData["Title"] = $"Torrent #{Model.Id}";
+}
 
 @{
     var usr = this.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;

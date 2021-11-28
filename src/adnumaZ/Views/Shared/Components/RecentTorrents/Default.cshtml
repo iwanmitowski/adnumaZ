@@ -1,0 +1,23 @@
+﻿@model IEnumerable<TorrentViewModel>
+
+<table class="table table-hover table-bordered table-responsive-lg slight-transperent">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Uploader</th>
+            <th scope="col">Size</th>
+            <th scope="col">Uploaded on</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var torrent in Model)
+        {
+            <tr>
+                <td><strong><a asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id"><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></a></strong></td>
+                <td>@torrent.Uploader</td>
+                <td>@torrent.Size</td>
+                <td>@torrent.CreatedOn</td>
+            </tr>
+        }
+    </tbody>
+</table>
