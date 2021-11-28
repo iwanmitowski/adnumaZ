@@ -1,4 +1,4 @@
-﻿@model TorrentListViewModel
+@model TorrentListViewModel
 @{
     ViewData["Title"] = "Torrents";
 }
@@ -32,7 +32,7 @@
                 <td><a asp-controller="Torrent" asp-action="ById" asp-route-id="@torrent.Id"><span data-toggle="tooltip" data-placement="top" title="@torrent.Title">@torrent.TitleShort</span></a></td>
                 <td>Temp Cat 1, Temp Cat 2</td>
                 <td>@torrent.Uploader</td>
-                <td>@torrent.Size</td>
+            <td>@torrent.Size.ToString("F2") GBs</td>
                 <td>@torrent.CreatedOn</td>
             </tr>
         }
