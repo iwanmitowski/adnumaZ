@@ -92,6 +92,8 @@ namespace adnumaZ
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseStatusCodePagesWithRedirects("/Error/HttpError?statusCode={0}");
+
             app.UseStaticFiles();
 
             app.UseRouting();

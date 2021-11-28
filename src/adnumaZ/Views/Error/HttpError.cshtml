@@ -1,0 +1,305 @@
+﻿@model int
+
+@{
+    ViewData["Title"] = $"Error {Model}";
+    Layout = "_ErrorLayout";
+    var numbers = Model.ToString().ToCharArray();
+
+}
+    <div id="wrap">
+    <div id="wordsearch">
+      <ul>
+        <li class="fourteen">i</li>
+
+        <li class="fifteen">v</li>
+
+        <li class="sixteen">a</li>
+
+        <li class="seventeen">n</li>
+
+        <li>m</li>
+
+        <li>x</li>
+
+        <li>a</li>
+
+        <li>z</li>
+
+        <li>t</li>
+
+        <li><</li>
+
+        <li>3</li>
+
+        <li>l</li>
+
+        <li class="one">@numbers[0]</li>
+
+        <li class="two">@numbers[1]</li>
+
+        <li class="three">@numbers[2]</li>
+
+        <li>y</li>
+
+        <li>y</li>
+
+        <li>b</li>
+
+        <li>a</li>
+
+        <li>n</li>
+
+        <li>i</li>
+
+        <li>c</li>
+
+        <li>a</li>
+
+        <li>y</li>
+
+        <li>r</li>
+
+        <li class="four">s</li>
+
+        <li class="five">t</li>
+
+        <li class="six">a</li>
+
+        <li class="seven">t</li>
+
+        <li class="eight">u</li>
+
+        <li class="nine">s</li>
+
+
+        <li>j</li>
+
+        <li>a</li>
+
+        <li>n</li>
+
+        <li>r</li>
+
+        <li>3</li>
+
+        <li>s</li>
+
+        <li>4</li>
+
+        <li>e</li>
+
+        <li>w</li>
+
+        <li>v</li>
+
+        <li>x</li>
+
+
+        <li class="ten">c</li>
+
+        <li class="eleven">o</li>
+
+        <li class="twelve">d</li>
+
+        <li class="thirteen">e</li>
+
+        <li>h</li>
+
+        <li>q</li>
+
+        <li>s</li>
+
+        <li>f</li>
+
+        <li>b</li>
+
+        <li>o</li>
+
+        <li>z</li>
+
+        <li>a</li>
+
+        <li>s</li>
+
+        <li>w</li>
+
+        <li class="fourteen">k</li>
+
+        <li class="fifteen">r</li>
+
+        <li class="sixteen">a</li>
+
+        <li class="seventeen">s</li>
+
+        <li class="eighteen">i</li>
+
+        <li class="nineteen">m</li>
+
+        <li class="twenty">i</li>
+
+        <li class="twentyone">r</li>
+      </ul>
+    </div>
+
+    <div id="main-content">
+      <h1>Error occured, stay calm</h1>
+
+      <p>Try searching for something else</p>
+
+      <p>Alternatively, search
+      for whatever is missing or take a look around the rest of our site.</p>
+
+      @if (this.User.Identity.IsAuthenticated)
+{
+    <div id="search">
+    <form asp-controller="Torrent" asp-action="All" asp-route-id="1">
+        <div class="input-group mb-4">
+            <input type="search" name="search" class="form-control" placeholder="Enter keywords, space separated..." />
+            <div class="input-group-append">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+    </div>
+}
+      <div id="navigation">
+        <a class="navigation" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        <a class="navigation" asp-area="" asp-controller="Torrent" asp-action="All">Torrents</a>
+      </div>
+    </div>
+  </div>
+
+@section Scripts{
+    <script>
+      $(function () {
+    var liWidth = $("li").css("width");
+    $("li").css("height", liWidth);
+    $("li").css("lineHeight", liWidth);
+    var totalHeight = $("#wordsearch").css("width");
+    $("#wordsearch").css("height", totalHeight);
+});
+causeRepaintsOn = $("h1, h2, h3, p");
+$(window).resize(function () {
+    causeRepaintsOn.css("z-index", 1);
+});
+$(window).on('resize', function () {
+    var liWidth = $(".one").css("width");
+    $("li").css("height", liWidth);
+    $("li").css("lineHeight", liWidth);
+    var totalHeight = $("#wordsearch").css("width");
+    $("#wordsearch").css("height", totalHeight);
+});
+
+
+
+$(function () {
+
+    $(this).delay(1500).queue(function () {
+        $(".one").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".two").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".three").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".four").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".five").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".six").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".seven").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".eight").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".nine").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".ten").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".eleven").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".twelve").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".thirteen").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".fourteen").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".fifteen").addClass("selected");
+        $(this).dequeue()
+    })
+
+    .delay(500).queue(function () {
+        $(".sixteen").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".seventeen").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".eighteen").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".nineteen").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".twenty").addClass("selected");
+        $(this).dequeue();
+    })
+
+    .delay(500).queue(function () {
+        $(".twentyone").addClass("selected");
+        $(this).dequeue();
+    })
+
+});
+  </script>
+}
+  
