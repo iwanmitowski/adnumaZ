@@ -104,7 +104,7 @@
                             </article>
                         </section>
                         <hr />
-                        <section>
+                        <section class="mb-2">
                             <h3>Torrent info</h3>
                             <article>
                                 Uploader: <a asp-controller="Users" asp-action="ById" asp-route-id="@Model.Uploader.Id">@Model.Uploader.UserName</a>
@@ -119,7 +119,12 @@
                                 Downloaded times: @Model.DownloadersCount
                             </article>
                         </section>
-                        @if (User.IsInRole(adnumaZ.Common.Constants.Constants.AdministratorRoleName))
+                        @if ((usr != null && usr == @Model.Uploader.Id) || User.IsInRole(Constants.AdministratorRoleName))
+                        {
+                            <div id="PlaceHolderHere"></div>
+                            <button type="button" class="btn btn-warning" data-toggle="ajax-modal" data-target="#editTorrent" data-url="@Url.Action("Edit", new {id = @Model.Id})">Edit</button>
+                        }
+                        @if (User.IsInRole(Constants.AdministratorRoleName))
                         {
                             <div class="mt-2">
                                 @if (Model.IsApproved)
@@ -200,34 +205,81 @@
 
 <script>
 
-    function showAddCommentForm(parentId) {
-        $("#AddCommentForm input[name='ParentId']").val(String(parentId));
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $("#AddCommentForm").offset().top
-        }, 1000);
-    }
+        function showAddCommentForm(parentId) {
+            $("#AddCommentForm input[name='ParentId']").val(String(parentId));
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#AddCommentForm").offset().top
+            }, 1000);
+        }
 
-    function approve(torrentId, condition) {
-        var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
-        var json = { torrentId: torrentId };
-        var isApproved = $("#approveButton").text();
-        console.log(isApproved);
-        $.ajax({
-            url: "/api/changeApproval",
-            type: "POST",
-            data: JSON.stringify(json),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            headers: { 'X-CSRF-TOKEN': token },
-            success: function (data) {
-                if (isApproved == "Approve") {
-                    $("#approveButton").text("Disapprove");
+        function approve(torrentId, condition) {
+            var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
+            var json = { torrentId: torrentId };
+            var isApproved = $("#approveButton").text();
+            console.log(isApproved);
+            $.ajax({
+                url: "/api/changeApproval",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    if (isApproved == "Approve") {
+                        $("#approveButton").text("Disapprove");
+                    }
+                    else {
+                        $("#approveButton").text("Approve");
+                    }
                 }
-                else {
-                    $("#approveButton").text("Approve");
+            });
+        }
+
+        $(function() {
+        var placeholderElement = $('#PlaceHolderHere');
+        $('button[data-toggle="ajax-modal"]').click(function (event) {
+            var url = $(this).data('url');
+            $.get(url).done(function (data) {
+                placeholderElement.html(data);
+                placeholderElement.find('.modal').modal('show');
+            })
+        })
+
+
+            placeholderElement.on('click', '[data-save="modal"]', function (event) {
+
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var sendData = form.serialize();
+
+            if(confirm('Are you sure you wish to edit that torrent? After consent you will have to wait to be approved by administrator!'))
+            {
+            $.post(actionUrl, sendData).done(function (data) {
+
+                alert("After the changes your torrent is waiting for approval !");
+
+                placeholderElement.find('.modal').modal('hide');
+
+                var origin = window.location.origin;
+
+                if (@($"{this.User.IsInRole(Constants.AdministratorRoleName)}".ToLower()) == true)
+                {
+                    console.log("admin4e")
+
+                    window.location.replace(origin + "/Administration/Torrents/All");
                 }
-            }
-        });
-    }
+                else{
+                    window.location.replace(origin + "/t");
+                }
+            })
+             }
+        else{
+            placeholderElement.find('.modal').modal('hide');
+        }
+        })
+
+
+    })
+
 </script>
 }
