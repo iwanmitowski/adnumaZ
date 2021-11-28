@@ -23,7 +23,6 @@ namespace adnumaZ.Controllers
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
-        private readonly string TorrentsDirectory;
 
         public TorrentController(ApplicationDbContext dbContext,
             IMapper mapper,
@@ -32,15 +31,6 @@ namespace adnumaZ.Controllers
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.userManager = userManager;
-            
-            
-            var torrentsDirectory = Environment.GetEnvironmentVariable("FILE_UPLOAD_DIRECTORY");
-            if(torrentsDirectory == null)
-            {
-                torrentsDirectory = Path.Combine("D:", "DemoCodes", "temp");
-            }
-
-            TorrentsDirectory = torrentsDirectory;
         }
 
         public async Task<IActionResult> ById(int id)
@@ -107,7 +97,7 @@ namespace adnumaZ.Controllers
 
             int fileNumber = dbContext.Torrents.Count() + 1;
             var fileName = "File" + fileNumber + ".torrent";
-            var saveToPath = Path.Combine(TorrentsDirectory, fileName);
+            var saveToPath = Path.Combine("D:", "DemoCodes", "temp", fileName);
 
             torrent.TorrentFilePath = saveToPath;
 
@@ -130,7 +120,9 @@ namespace adnumaZ.Controllers
             }
 
             //To torrents
-            return RedirectToAction("Privacy", "Home");
+            return RedirectToAction(nameof(this.All),
+                                   nameof(TorrentController).Replace("Controller", string.Empty),
+                                   new { id = 1, search = string.Empty });
         }
 
         public IActionResult All(int id, string search)
