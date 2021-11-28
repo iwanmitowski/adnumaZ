@@ -3,7 +3,7 @@
 }
 <script src="~/lib/particles.js/particles.min.js" data-turbolinks-track="reload" asp-append-version="true"></script>
 
-<div id="particles-js" class="jumbotron d-flex align-items-center min-vh-100 bg-transperant">
+<div id="particles-js" class="jumbotron d-flex align-items-center min-vh-100 bg-transparent">
 </div>
 <div class="centering">
     <div class="container text-center">
@@ -21,16 +21,12 @@
         }
         else
         {
-            <h1 class="text-center">Welcome to adnumaZ, @userName</h1>
-            @for (int i = 1; i <= 10; i++)
-        {
-            <h1>Simuliram torent</h1>
+            @await Component.InvokeAsync("RecentTorrents")
+
+            <div>
+                <a class="mt-3 btn btn-primary" asp-area="" asp-controller="Torrent" asp-action="All">Check more</a>
+            </div>
         }
-        <div>
-            <a class="mt-3 btn btn-primary" asp-area="" asp-controller="Torrent" asp-action="All">Check more</a>
-        </div>
-        }
-        
     </div>
 </div>
 <script>

@@ -41,13 +41,12 @@
         </nav>
     </header>
     <div>
-         @if (ViewData["Title"].ToString() == "Home Page")
-                {
-                    <partial name="_HomePartial" />
-                }
+        @if (ViewData["Title"].ToString() == "Home Page")
+        {
+            <partial name="_HomePartial" />
+        }
         <div class="container pt-3">
             <main role="main" class="pb-3">
-               
                 @RenderBody()
             </main>
         </div>
@@ -55,13 +54,13 @@
 
     @if (ViewData["Title"].ToString() != "Home Page")
     {
-       <footer class="border-top footer text-muted">
-        <div class="container text-center">
-            &copy; @DateTime.UtcNow.Year - adnumaZ - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer> 
+        <footer class="border-top footer text-muted">
+            <div class="container text-center">
+                &copy; @DateTime.UtcNow.Year - adnumaZ - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
     }
-    
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
