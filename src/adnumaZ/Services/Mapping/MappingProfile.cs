@@ -1,4 +1,5 @@
-﻿using adnumaZ.Models;
+﻿using adnumaZ.Common.Constants;
+using adnumaZ.Models;
 using adnumaZ.ViewModels;
 using AutoMapper;
 using System;
@@ -17,6 +18,7 @@ namespace adnumaZ.Services.Mapping
             this.CreateMap<UploadTorrentViewModel, Torrent>()
                 .ForMember(x => x.CreatedOn, y => y.MapFrom(s => DateTime.UtcNow))
                 .ForMember(x => x.Size, y => y.MapFrom(s => s.File.Length / 1024 / 1024.0))
+                .ForMember(x=>x.ImageUrl, y=> y.MapFrom(s=> s.ImageUrl != null ? s.ImageUrl : Constants.DefaultTorrentImage))
                 .AfterMap<SetModelMappingAction>(); //Mapping the uploader
 
             this.CreateMap<Torrent, TorrentViewModel>()

@@ -1,4 +1,5 @@
-﻿using adnumaZ.Common.Models.Contracts;
+﻿using adnumaZ.Common.Constants;
+using adnumaZ.Common.Models.Contracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,7 @@ namespace adnumaZ.Models
             this.Downloaders = new HashSet<User>();
             this.FavouritedByUsers = new HashSet<User>();
             this.Comments = new HashSet<Comment>();
+            this.ImageUrl = Constants.DefaultTorrentImage;
         }
         public int Id { get; set; }
 
