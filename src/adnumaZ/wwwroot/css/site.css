@@ -5,8 +5,91 @@ for details on configuring this project to bundle and minify static web assets. 
 /* Custom styles
 -------------------------------------------------- */
 
+@media (prefers-color-scheme: dark) {
+  :root {
+      --navbar-background: #161b22;
+      --body-background: #0d1117;
+      --input-background: #010409;
+      --text-color: #fff;
+  }
+
+  .navbar {
+      border-bottom: none !important;
+  }
+
+  .footer {
+      border-top: none !important;
+  }
+
+  .slight-transperent {
+      background: none !important;
+      color: var(--text-color);
+  }
+
+  .user-container {
+      background: var(--body-background) !important;
+      border: 1px solid var(--text-color) !important;
+  }
+
+  .ibox-content {
+      background: var(--body-background) !important;
+      border: 1px solid var(--text-color) !important;
+  }
+
+  .table-torrents {
+      background: var(--body-background) !important;
+      color: var(--text-color);
+      border: 1px solid var(--text-color) !important;
+  }
+
+  .slight-transperent *:hover,
+  .table-torrents *:hover {
+      background: var(--body-background) !important;
+      color: var(--text-color) !important;
+  }
+
+  .card {
+      background: var(--body-background) !important;   
+      border: 1px solid var(--text-color) !important;
+  }
+  
+  .card * {
+      color: var(--text-color) !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+      --navbar-background: inherit;
+      --body-background: #eee;
+      --text-color: inherit;
+      --input-background: inherit;
+  }
+}
+
+
 body {
-    background: #eee;
+    background: var(--body-background);
+    color: var(--text-color) !important;
+}
+
+.navbar {
+    background: var(--navbar-background) !important;
+}
+
+.navbar.navbar.navbar * {
+    color: var(--text-color) !important;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="search"],
+input[type="datetime-local"],
+input[type="button"],
+textarea {
+    background: var(--input-background) !important;
+    color: var(--text-color) !important;
 }
 
 .white-bg {
