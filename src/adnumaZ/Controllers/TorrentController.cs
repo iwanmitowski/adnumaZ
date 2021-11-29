@@ -29,16 +29,28 @@ namespace adnumaZ.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
         private readonly IConfiguration configuration;
+        private readonly IBencodeParser bencodeParser;
+        private readonly string TorrentsDirectory;
 
         public TorrentController(ApplicationDbContext dbContext,
             IMapper mapper,
             UserManager<User> userManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IBencodeParser bencodeParser)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.userManager = userManager;
             this.configuration = configuration;
+            this.bencodeParser = bencodeParser;
+
+            var torrentsDirectory = Environment.GetEnvironmentVariable("FILE_UPLOAD_DIRECTORY");
+            if (torrentsDirectory == null)
+            {
+                torrentsDirectory = Path.Combine("D:", "DemoCodes", "temp");
+            }
+
+            TorrentsDirectory = torrentsDirectory;
         }
 
         public async Task<IActionResult> ById(int id)
@@ -47,7 +59,7 @@ namespace adnumaZ.Controllers
                 await dbContext.Torrents
                 .Include(x => x.Uploader)
                 .Include(x => x.Downloaders)
-                .Include(x => x.Comments.OrderBy(x => x.IsDeleted).ThenByDescending(x=>x.CreatedOn))
+                .Include(x => x.Comments.OrderBy(x => x.IsDeleted).ThenByDescending(x => x.CreatedOn))
                 .FirstOrDefaultAsync(x => x.Id == id));
 
             if (torrent == null)
@@ -101,24 +113,22 @@ namespace adnumaZ.Controllers
 
             try
             {
-                var parser = new BencodeParser();
-
                 var torrentStream = torrentDTO.File.OpenReadStream();
-                var torrentObject = await parser.ParseAsync<BencodeNET.Torrents.Torrent>(torrentStream);
+                var torrentObject = await bencodeParser.ParseAsync<BencodeNET.Torrents.Torrent>(torrentStream);
 
-            var torrent = mapper.Map<Torrent>(torrentDTO);
+                var torrent = mapper.Map<Torrent>(torrentDTO);
                 torrent.Size = torrentObject.Files.Sum(f => f.FileSize) / 1024d / 1024d / 1024d;
                 torrent.Hash = torrentObject.GetInfoHash().ToLower();
 
-            await dbContext.AddAsync(torrent);
+                await dbContext.AddAsync(torrent);
 
-            int fileNumber = dbContext.Torrents.Count() + 1;
-            var fileName = "File" + fileNumber + ".torrent";
-                var saveToPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+                int fileNumber = dbContext.Torrents.Count() + 1;
+                var fileName = "File" + fileNumber + ".torrent";
+                var saveToPath = Path.Combine(TorrentsDirectory, fileName);
 
-            torrent.TorrentFilePath = saveToPath;
+                torrent.TorrentFilePath = saveToPath;
 
-            var user = await userManager.GetUserAsync(HttpContext.User);
+                var user = await userManager.GetUserAsync(HttpContext.User);
 
                 using (Stream fileStream = new FileStream(saveToPath, FileMode.Create))
                 {
