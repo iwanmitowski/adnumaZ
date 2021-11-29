@@ -60,6 +60,7 @@ Enter torrent info - Title, Description, image
 ```
 ```
 Saved in database with custom name avoiding privacy issues
+Utilizes BencodeNET to parse .torrent files and collect data such as size, number of files etc.
 ```
 
 #### Download
@@ -73,6 +74,7 @@ Changing the custom name to the actual torrent name
 #### All
 ```
 Torrent info - Title, uploader, size, seeders, peers, upload date
+Seeders and peers are retrieved from the tracker REST API
 ```
 ```
 Pagination
@@ -146,6 +148,11 @@ Custom 404 error page
 ```
 Dynamic status codes page, with easter eggs 🥚
 ```
+### Dark mode
+```
+The design adapts dynamically to the system light or dark mode preferences
+For all the hackers out there
+```
 
 ## 🚀 Deployment <a name = "deployment"></a>
 To start the project in development mode, run in the project directory:
@@ -172,7 +179,7 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 ## ✍️ Authors <a name = "authors"></a>
 - [@iwanmitowski](https://github.com/iwanmitowski) - Idea & Initial work
-- [@kaykayehnn](https://github.com/kaykayehnn) - Initial work & Hosting
+- [@kaykayehnn](https://github.com/kaykayehnn) - Initial work & Deployment
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 - Knowledge - [@NikolayIT](https://github.com/NikolayIT)
