@@ -176,6 +176,7 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 * [Bootstrap](https://github.com/twbs/bootstrap)
 * [Particles.js](https://github.com/VincentGarreau/particles.js/)
 * [BencodeNET](https://github.com/Krusen/BencodeNET)
+* [bittorrent-tracker](https://github.com/webtorrent/bittorrent-tracker)
 
 ## ✍️ Authors <a name = "authors"></a>
 - [@iwanmitowski](https://github.com/iwanmitowski) - Idea & Initial work
