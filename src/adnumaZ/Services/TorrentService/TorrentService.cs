@@ -26,11 +26,13 @@ namespace adnumaZ.Services.TorrentService
     {
         private readonly IBencodeParser bencodeParser;
         private readonly ApplicationDbContext dbContext;
+        private readonly IConfiguration configuration;
 
-        public TorrentService(IBencodeParser bencodeParser, ApplicationDbContext dbContext)
+        public TorrentService(IBencodeParser bencodeParser, ApplicationDbContext dbContext, IConfiguration configuration)
         {
             this.bencodeParser = bencodeParser;
             this.dbContext = dbContext;
+            this.configuration = configuration;
         }
 
         public void AsignTorrentToUser(Torrent torrent, User user)
@@ -73,6 +75,43 @@ namespace adnumaZ.Services.TorrentService
             {
                 await torrentDTO.File.CopyToAsync(fileStream);
             }
+        }
+
+        public List<Task<TorrentSeedData>> GetTorrentSeedData(string trackerApiPath, List<TorrentViewModel> torrents)
+        {
+            var torrentSeedDataTasks = new List<Task<TorrentSeedData>>();
+
+            foreach (var torrent in torrents)
+            {
+                if (configuration["TrackerApiPath"] == null)
+                {
+                    torrentSeedDataTasks.Add(Task.FromResult(new TorrentSeedData() { Hash = torrent.Hash }));
+                }
+                else
+                {
+                    var task = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            var httpClient = new HttpClient();
+
+                            var response = await httpClient.GetStringAsync($"{trackerApiPath}/t/{torrent.Hash}");
+
+                            var seedData = JsonConvert.DeserializeObject<TorrentSeedData>(response);
+
+                            return seedData;
+                        }
+                        catch (Exception)
+                        {
+                            return new TorrentSeedData() { Hash = torrent.Hash, Seeders = 0, Peers = 0 };
+                        }
+                    });
+
+                    torrentSeedDataTasks.Add(task);
+                }
+            }
+
+            return torrentSeedDataTasks;
         }
     }
 }

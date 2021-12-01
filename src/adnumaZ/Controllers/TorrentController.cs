@@ -192,37 +192,8 @@ namespace adnumaZ.Controllers
                 return RedirectToAction(nameof(this.All), new { id = pagesCount, search = search });
             }
 
-            var torrentSeedDataTasks = new List<Task<TorrentSeedData>>();
             var trackerApiPath = configuration["TrackerApiPath"];
-            foreach (var torrent in torrents)
-            {
-                if (configuration["TrackerApiPath"] == null)
-                {
-                    torrentSeedDataTasks.Add(Task.FromResult(new TorrentSeedData() { Hash = torrent.Hash }));
-                }
-                else
-                {
-                    var task = Task.Run(async () =>
-                    {
-                        try
-                        {
-                            var httpClient = new HttpClient();
-
-                            var response = await httpClient.GetStringAsync($"{trackerApiPath}/t/{torrent.Hash}");
-
-                            var seedData = JsonConvert.DeserializeObject<TorrentSeedData>(response);
-
-                            return seedData;
-                        }
-                        catch (Exception)
-                        {
-                            return new TorrentSeedData() { Hash = torrent.Hash, Seeders = 0, Peers = 0 };
-                        }
-                    });
-
-                    torrentSeedDataTasks.Add(task);
-                }
-            }
+            var torrentSeedDataTasks = torrentService.GetTorrentSeedData(trackerApiPath, torrents);
 
             var torrentSeedData = torrentSeedDataTasks
                 .ToDictionary(t => t.Result.Hash, t => t.Result);
