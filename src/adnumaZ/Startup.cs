@@ -16,6 +16,8 @@ using adnumaZ.Services.UserService;
 using adnumaZ.Services.CommentService.Contracts;
 using adnumaZ.Services.CommentService;
 using BencodeNET.Parsing;
+using adnumaZ.Services.TorrentService;
+using adnumaZ.Services.TorrentService.Contracts;
 
 namespace adnumaZ
 {
@@ -41,6 +43,7 @@ namespace adnumaZ
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<ITorrentService, TorrentService>();
             services.AddTransient<IBencodeParser, BencodeParser>();
 
             services.AddDefaultIdentity<User>(

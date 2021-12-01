@@ -3,6 +3,7 @@ using adnumaZ.Common.Constants;
 using adnumaZ.Common.Models;
 using adnumaZ.Data;
 using adnumaZ.Models;
+using adnumaZ.Services.TorrentService.Contracts;
 using adnumaZ.ViewModels;
 using AutoMapper;
 using BencodeNET.Parsing;
@@ -29,6 +30,7 @@ namespace adnumaZ.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
         private readonly IConfiguration configuration;
+        private readonly ITorrentService torrentService;
         private readonly IBencodeParser bencodeParser;
         private readonly string TorrentsDirectory;
 
@@ -36,12 +38,14 @@ namespace adnumaZ.Controllers
             IMapper mapper,
             UserManager<User> userManager,
             IConfiguration configuration,
+            ITorrentService torrentService,
             IBencodeParser bencodeParser)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.userManager = userManager;
             this.configuration = configuration;
+            this.torrentService = torrentService;
             this.bencodeParser = bencodeParser;
 
             var torrentsDirectory = Environment.GetEnvironmentVariable("FILE_UPLOAD_DIRECTORY");
@@ -114,28 +118,24 @@ namespace adnumaZ.Controllers
             try
             {
                 var torrentStream = torrentDTO.File.OpenReadStream();
-                var torrentObject = await bencodeParser.ParseAsync<BencodeNET.Torrents.Torrent>(torrentStream);
+                var torrentObject = await torrentService.GetTorrentObjectAsync(torrentStream);
 
                 var torrent = mapper.Map<Torrent>(torrentDTO);
-                torrent.Size = torrentObject.Files.Sum(f => f.FileSize) / 1024d / 1024d / 1024d;
-                torrent.Hash = torrentObject.GetInfoHash().ToLower();
+                torrent.Size = torrentService.SetTorrentSize(torrentObject);
+                torrent.Hash = torrentService.SetTorrentHash(torrentObject);
 
                 await dbContext.AddAsync(torrent);
 
-                int fileNumber = dbContext.Torrents.Count() + 1;
-                var fileName = "File" + fileNumber + ".torrent";
+                var fileName = torrentService.GenerateFileName();
                 var saveToPath = Path.Combine(TorrentsDirectory, fileName);
 
-                torrent.TorrentFilePath = saveToPath;
+                torrentService.SetTorrentFilePath(torrent, saveToPath);
+
+                await torrentService.CreateTorrentInTheGivenDirectory(saveToPath, torrentDTO);
 
                 var user = await userManager.GetUserAsync(HttpContext.User);
 
-                using (Stream fileStream = new FileStream(saveToPath, FileMode.Create))
-                {
-                    await torrentDTO.File.CopyToAsync(fileStream);
-                }
-
-                user.UploadedTorrents.Add(torrent);
+                torrentService.AsignTorrentToUser(torrent, user);
 
                 await dbContext.SaveChangesAsync();
             }
