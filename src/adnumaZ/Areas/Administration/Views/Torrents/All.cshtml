@@ -75,6 +75,8 @@ else
         }
 
         function startRefresh() {
+            var origin = window.location.origin + "/Administration/Torrents/All";
+
             setTimeout(startRefresh,1000);
             $.get(origin, function(data) {
             $(document.body).html(data);    
