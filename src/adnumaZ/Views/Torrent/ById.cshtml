@@ -121,12 +121,17 @@
                         </section>
                         @if ((usrId != null && usrId != @Model.Uploader.Id) && !@Model.FavouritedByUsersId.Contains(usrId))
                         {
+                            <div id="favouriteButtonContainer" class="mb-2">
                             <button id="favouriteButton" class="btn btn-info" onclick="favourite(@Model.Id)"> <i id="heartEmoji" class="far fa-heart"></i>
-Favourite </button>
+<span class="ml-1">Favourite </span></button>
+                            </div>
+                            
                         }
                         else if ((usrId != null && usrId != @Model.Uploader.Id) && @Model.FavouritedByUsersId.Contains(usrId))
                         {
-                            <button id="favouriteButton" class="btn btn-info" onclick="favourite(@Model.Id)"> <i id="heartEmoji" class="fas fa-heart"></i>Unfavourite </button>
+                            <div id="favouriteButtonContainer" class="mb-2">
+                            <button id="favouriteButton" class="btn btn-info" onclick="favourite(@Model.Id)"> <i id="heartEmoji" class="fas fa-heart"></i><span class="ml-1">Unfavourite</span></button>
+                            </div>
                         }
 
                         @if ((usrId != null && usrId == @Model.Uploader.Id) || User.IsInRole(Constants.AdministratorRoleName))
@@ -219,9 +224,10 @@ Favourite </button>
             $([document.documentElement, document.body]).animate({
                 scrollTop: $("#AddCommentForm").offset().top
             }, 1000);
+           $("#AddCommentForm > div > div > textarea").focus();
         }
 
-        function approve(torrentId, condition) {
+        function approve(torrentId) {
             var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
             var json = { torrentId: torrentId };
             var isApproved = $("#approveButton").text();
@@ -286,9 +292,32 @@ Favourite </button>
             placeholderElement.find('.modal').modal('hide');
         }
         })
-
-
     })
+
+    function favourite(torrentId) {
+            var token = $("#torrentsForm input[name=__RequestVerificationToken]").val();
+            var json = { torrentId: torrentId };
+            var isFavourited = $("#favouriteButton").text();
+            console.log($("#favouriteButton").text());
+            $.ajax({
+                url: "/api/changeFavourability",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    if (isFavourited === "Favourited") {
+                        $("#favouriteButton").text("Unfavourited");
+                    }
+                    else {
+                        $("#favouriteButton").text("Favourited");
+                    }
+
+                   $("#favouriteButtonContainer").load(location.href + " #favouriteButtonContainer");
+                }
+            });
+        }
 
     $("#favouriteButton").hover(
   	() => { //hover

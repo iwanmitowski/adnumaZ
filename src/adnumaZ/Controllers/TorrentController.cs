@@ -68,6 +68,7 @@ namespace adnumaZ.Controllers
                 await dbContext.Torrents
                 .Include(x => x.Uploader)
                 .Include(x => x.Downloaders)
+                .Include(x=>x.FavouritedByUsers)
                 .Include(x => x.Comments.OrderBy(x => x.IsDeleted).ThenByDescending(x => x.CreatedOn))
                 .FirstOrDefaultAsync(x => x.Id == id));
 
