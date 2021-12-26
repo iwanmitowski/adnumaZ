@@ -32,5 +32,7 @@ namespace adnumaZ.ViewModels
         public string Hash { get; set; }
 
         public IEnumerable<CommentViewModel> Comments { get; set; }
+
+        public IEnumerable<string> FavouritedByUsersId { get; set; }
     }
 }

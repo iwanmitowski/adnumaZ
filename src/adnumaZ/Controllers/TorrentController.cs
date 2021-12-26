@@ -5,14 +5,19 @@ using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.Services.TorrentService.Contracts;
 using adnumaZ.ViewModels;
+
 using AutoMapper;
+
 using BencodeNET.Parsing;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -206,6 +211,54 @@ namespace adnumaZ.Controllers
                 TorrentCount = torrentCount,
                 PagesCount = pagesCount,
                 Search = search,
+            };
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> Favourite(int id)
+        {
+            id = Math.Max(1, id);
+
+            var skip = (id - 1) * TorrentsPerPage;
+
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
+            var query = dbContext.Torrents
+                .Include(x => x.Uploader)
+                .Include(x => x.FavouritedByUsers)
+                .Where(x => x.IsApproved)
+                .Where(x => x.FavouritedByUsers.Any(x=>x.Id == user.Id));
+
+            var torrents = mapper.Map<List<TorrentViewModel>>(query
+                .OrderByDescending(x => x.ModifiedOn)
+                .ThenBy(x => x.CreatedOn)
+                .ThenByDescending(x => x.Id)
+                .Skip(skip)
+                .Take(TorrentsPerPage))
+                .ToList();
+
+            var torrentCount = query.Count();
+            var pagesCount = (int)Math.Ceiling(torrentCount / (double)TorrentsPerPage);
+
+            if (id > pagesCount)
+            {
+                return RedirectToAction(nameof(this.Favourite), new { id = pagesCount});
+            }
+
+            var trackerApiPath = configuration["TrackerApiPath"];
+            var torrentSeedDataTasks = torrentService.GetTorrentSeedData(trackerApiPath, torrents);
+
+            var torrentSeedData = torrentSeedDataTasks
+                .ToDictionary(t => t.Result.Hash, t => t.Result);
+
+            var viewModel = new TorrentListViewModel()
+            {
+                Torrents = torrents,
+                TorrentSeedData = torrentSeedData,
+                CurrentPage = id,
+                TorrentCount = torrentCount,
+                PagesCount = pagesCount,
             };
 
             return View(viewModel);
