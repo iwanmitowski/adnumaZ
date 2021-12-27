@@ -16,9 +16,14 @@ namespace adnumaZ.Data
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         public DbSet<Torrent> Torrents { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<UserDownloadedTorrent> UserDownloadedTorrents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<UserDownloadedTorrent>()
+                .Property(udt => udt.DownloadedAt)
+                .HasDefaultValue(DateTime.UtcNow);
+
             builder.Entity<User>()
                 .HasMany(t => t.UploadedTorrents)
                 .WithOne(c => c.Uploader);

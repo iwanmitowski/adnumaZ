@@ -1,5 +1,8 @@
 ﻿using adnumaZ.Models;
+
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace adnumaZ.ViewModels
 {
@@ -27,10 +30,16 @@ namespace adnumaZ.ViewModels
 
         public bool IsApproved { get; set; }
 
-        public int DownloadersCount { get; set; }
-        
+        public long DownloadersCount => UserDownloadedTorrents.Select(x=>x.User).Count();
+
         public string Hash { get; set; }
 
         public IEnumerable<CommentViewModel> Comments { get; set; }
+
+        public IEnumerable<string> FavouritedByUsersId { get; set; }
+
+        public IEnumerable<UserDownloadedTorrent> UserDownloadedTorrents { get; set; }
+
+        public bool IsFavourited { get; set; }
     }
 }

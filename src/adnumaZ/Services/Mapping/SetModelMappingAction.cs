@@ -14,7 +14,8 @@ namespace adnumaZ.Services.Mapping
     //https://docs.automapper.org/en/stable/Before-and-after-map-actions.html#asp-net-core-and-automapper-extensions-microsoft-dependencyinjection
     public class SetModelMappingAction : IMappingAction<UploadTorrentViewModel, Torrent>,
                                         IMappingAction<CommentInputModel, Comment>,
-                                        IMappingAction<Comment, CommentViewModel>
+                                        IMappingAction<Comment, CommentViewModel>,
+                                        IMappingAction<Torrent, TorrentViewModel>
     {
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserManager<User> userManager;
@@ -44,11 +45,18 @@ namespace adnumaZ.Services.Mapping
             destination.User = GetUser(source.UserId);
         }
 
-        private User GetUser(string userId) => dbContext.UserAccounts.FirstOrDefault(x => x.Id == userId);
+        public void Process(Torrent source, TorrentViewModel destination, ResolutionContext context)
+        {
+            var user = GetUser();
 
+            destination.IsFavourited = source.FavouritedByUsers.Any(u=> u == user);
+        }
+        
+        private User GetUser(string userId) => dbContext.UserAccounts.FirstOrDefault(x => x.Id == userId);
         private Torrent GetTorrent(int torrentId) => dbContext.Torrents.FirstOrDefault(x => x.Id == torrentId);
         private Comment GetParentComment(string parentId) => dbContext.Comments.FirstOrDefault(x => x.Id == parentId);
         private User GetUser() => userManager.GetUserAsync(httpContextAccessor.HttpContext.User).Result;
+
     }
 
 }

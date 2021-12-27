@@ -56,7 +56,7 @@ namespace adnumaZ.Areas.Administration.Controllers
         {
             var userFromDb = await dbContext.UserAccounts
                 .Include(x => x.UploadedTorrents)
-                .Include(x => x.DownloadedTorrents)
+                .Include(x => x.UserDownloadedTorrents)
                 .Include(x => x.FavouriteTorrents)
                 .FirstOrDefaultAsync(x => x.Id == id);
 

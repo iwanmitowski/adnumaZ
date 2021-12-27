@@ -17,9 +17,9 @@ namespace adnumaZ.ViewModels
 
         public virtual User User { get; set; }
 
-        public string UserUserName { get; set; }
+        public string UserUserName => User.UserName;
 
-        public string UserImageUrl { get; set; }
+        public string UserImageUrl => User.ImageUrl;
 
         public int TorrentId { get; set; }
 
