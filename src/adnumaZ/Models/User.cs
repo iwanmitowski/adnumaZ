@@ -13,9 +13,10 @@ namespace adnumaZ.Models
         {
             //this.Id = Guid.NewGuid().ToString();
             this.UploadedTorrents = new HashSet<Torrent>();
-            this.DownloadedTorrents = new HashSet<Torrent>();
+            //this.DownloadedTorrents = new HashSet<Torrent>();
             this.FavouriteTorrents = new HashSet<Torrent>();
             this.ImageUrl = Constants.DefaultProfilePfp;
+            this.UserDownloadedTorrents = new HashSet<UserDownloadedTorrent>();
         }
 
         // Audit info
@@ -44,10 +45,13 @@ namespace adnumaZ.Models
 
         public virtual ICollection<Torrent> UploadedTorrents { get; set; }
 
-        public virtual ICollection<Torrent> DownloadedTorrents { get; set; }
+        //public virtual ICollection<Torrent> DownloadedTorrents { get; set; }
 
         public virtual ICollection<Torrent> FavouriteTorrents { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<UserDownloadedTorrent> UserDownloadedTorrents { get; set; }
+
     }
 }

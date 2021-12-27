@@ -27,7 +27,7 @@ namespace adnumaZ.ViewModels
 
         public bool IsApproved { get; set; }
 
-        public long DownloadersCount { get; set; }
+        public long DownloadersCount => Downloaders.Count;
         
         public string Hash { get; set; }
 
@@ -35,8 +35,7 @@ namespace adnumaZ.ViewModels
 
         public IEnumerable<string> FavouritedByUsersId { get; set; }
 
-        public IEnumerable<User> Downloaders { get; set; }
-
+        public ICollection<User> Downloaders { get; set; }
 
         public bool IsFavourited { get; set; }
     }

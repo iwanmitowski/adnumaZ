@@ -32,12 +32,13 @@ namespace adnumaZ.Services.Mapping
                 .ForMember(x => x.Uploader, y => y.MapFrom(s => s.Uploader))
                 .ForMember(x => x.Hash, y => y.MapFrom(s => s.Hash))
                 .ForMember(x => x.FavouritedByUsersId, y => y.MapFrom(s => s.FavouritedByUsers.Select(u => u.Id)))
+                .ForMember(x => x.Downloaders, y => y.MapFrom(s => s.UserDownloadedTorrents.Select(u => u.User)))
                 .AfterMap<SetModelMappingAction>();
 
             this.CreateMap<User, UserViewModel>()
-                .ForMember(x => x.DownloadedTorrentGBs, y => y.MapFrom(s => s.DownloadedTorrents.Sum(t => t.Size)))
+                .ForMember(x => x.DownloadedTorrentGBs, y => y.MapFrom(s => s.UserDownloadedTorrents.Sum(t => t.Torrent.Size)))
                 .ForMember(x => x.UploadedTorrentGBs, y => y.MapFrom(s => s.UploadedTorrents.Sum(t => t.Size)))
-                .ForMember(x => x.DownloadedTorrentsCount, y => y.MapFrom(s => s.DownloadedTorrents.Count()))
+                .ForMember(x => x.DownloadedTorrentsCount, y => y.MapFrom(s => s.UserDownloadedTorrents.Count(udt => udt.UserId == s.Id)))
                 .ForMember(x => x.UploadedTorrentsCount, y => y.MapFrom(s => s.UploadedTorrents.Count()))
                 .ForMember(x => x.FavouriteTorrentsCount, y => y.MapFrom(s => s.FavouriteTorrents.Count()))
                 .AfterMap<SetIsAdminMappingAction>();

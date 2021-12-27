@@ -11,10 +11,11 @@ namespace adnumaZ.Models
     {
         public Torrent()
         {
-            this.Downloaders = new HashSet<User>();
+            //this.Downloaders = new HashSet<User>();
             this.FavouritedByUsers = new HashSet<User>();
             this.Comments = new HashSet<Comment>();
             this.ImageUrl = Constants.DefaultTorrentImage;
+            this.UserDownloadedTorrents = new HashSet<UserDownloadedTorrent>();
         }
         public int Id { get; set; }
 
@@ -43,7 +44,7 @@ namespace adnumaZ.Models
         public string Description { get; set; }
 
         public string ImageUrl { get; set; }
-        
+
         public string Hash { get; set; }
 
         [InverseProperty(nameof(User.Id))]
@@ -52,12 +53,14 @@ namespace adnumaZ.Models
         [InverseProperty(nameof(User.UploadedTorrents))]
         public virtual User Uploader { get; set; }
 
-        [InverseProperty(nameof(User.DownloadedTorrents))]
-        public virtual ICollection<User> Downloaders { get; set; }
+        //[InverseProperty(nameof(User.DownloadedTorrents))]
+        //public virtual ICollection<User> Downloaders { get; set; }
 
         [InverseProperty(nameof(User.FavouriteTorrents))]
         public virtual ICollection<User> FavouritedByUsers { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<UserDownloadedTorrent> UserDownloadedTorrents {get; set;}
     }
 }

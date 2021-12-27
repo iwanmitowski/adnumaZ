@@ -63,7 +63,7 @@ namespace adnumaZ.Controllers
             var torrent = mapper.Map<TorrentViewModel>(
                 await dbContext.Torrents
                 .Include(x => x.Uploader)
-                .Include(x => x.Downloaders)
+                .Include(x => x.UserDownloadedTorrents)
                 .Include(x=>x.FavouritedByUsers)
                 .Include(x => x.Comments.OrderBy(x => x.IsDeleted).ThenByDescending(x => x.CreatedOn))
                 .FirstOrDefaultAsync(x => x.Id == id));
@@ -95,7 +95,13 @@ namespace adnumaZ.Controllers
             var torrent = await dbContext.Torrents.FindAsync(id);
             var user = await userManager.GetUserAsync(HttpContext.User);
 
-            user.DownloadedTorrents.Add(torrent);
+            var userDownloadedTorrent = new UserDownloadedTorrent()
+            {
+                Torrent = torrent,
+                User = user,
+            };
+
+            user.UserDownloadedTorrents.Add(userDownloadedTorrent);
 
             await dbContext.SaveChangesAsync();
 
