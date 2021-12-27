@@ -27,13 +27,16 @@ namespace adnumaZ.ViewModels
 
         public bool IsApproved { get; set; }
 
-        public int DownloadersCount { get; set; }
+        public long DownloadersCount { get; set; }
         
         public string Hash { get; set; }
 
         public IEnumerable<CommentViewModel> Comments { get; set; }
 
         public IEnumerable<string> FavouritedByUsersId { get; set; }
+
+        public IEnumerable<User> Downloaders { get; set; }
+
 
         public bool IsFavourited { get; set; }
     }

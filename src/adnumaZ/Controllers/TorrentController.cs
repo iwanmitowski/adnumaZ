@@ -93,6 +93,11 @@ namespace adnumaZ.Controllers
             }
 
             var torrent = await dbContext.Torrents.FindAsync(id);
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
+            user.DownloadedTorrents.Add(torrent);
+
+            await dbContext.SaveChangesAsync();
 
             if (torrent == null)
             {
