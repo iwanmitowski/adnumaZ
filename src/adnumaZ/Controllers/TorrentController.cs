@@ -251,7 +251,7 @@ namespace adnumaZ.Controllers
             var torrentCount = query.Count();
             var pagesCount = (int)Math.Ceiling(torrentCount / (double)TorrentsPerPage);
 
-            if (id > pagesCount)
+            if (pagesCount != 0 && id > pagesCount)
             {
                 return RedirectToAction(nameof(this.Favourite), new { id = pagesCount});
             }
