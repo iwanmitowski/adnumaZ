@@ -32,7 +32,7 @@ namespace adnumaZ.Services.Mapping
                 .ForMember(x => x.Uploader, y => y.MapFrom(s => s.Uploader))
                 .ForMember(x => x.Hash, y => y.MapFrom(s => s.Hash))
                 .ForMember(x => x.FavouritedByUsersId, y => y.MapFrom(s => s.FavouritedByUsers.Select(u => u.Id)))
-                .ForMember(x=>x.IsFavourited, y=> y.MapFrom(s=> s.FavouritedByUsers.Any()));
+                .AfterMap<SetModelMappingAction>();
 
             this.CreateMap<User, UserViewModel>()
                 .ForMember(x => x.DownloadedTorrentGBs, y => y.MapFrom(s => s.DownloadedTorrents.Sum(t => t.Size)))

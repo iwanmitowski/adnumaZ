@@ -29,6 +29,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Torrent" asp-action="Upload">Upload</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Torrent" asp-action="Favourite">Favourites</a>
+                        </li>
                         @if (User.IsInRole(adnumaZ.Common.Constants.Constants.AdministratorRoleName))
                         {
                             <li class="nav-item">

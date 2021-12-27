@@ -56,7 +56,7 @@
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Torrent" asp-action="All" asp-route-id="@Model.PreviousPage">
+                        <a class="page-link" asp-controller="Torrent" asp-action="Favourite" asp-route-id="@Model.PreviousPage">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -99,14 +99,14 @@
                     if (i > 0 && pageNumber - 1 != pagesToShow.ElementAt(i - 1))
                     {
                         <li class="page-item @className">
-                            <a class="page-link" asp-controller="Torrent" asp-action="All" asp-route-id="@(pagesToShow.ElementAt(i - 1) + 1)" asp-route-search="@this.Model.Search">
+                            <a class="page-link" asp-controller="Torrent" asp-action="Favourite" asp-route-id="@(pagesToShow.ElementAt(i - 1) + 1)">
                                 ...
                             </a>
                         </li>
                     }
 
                     <li class="page-item @className">
-                        <a class="page-link" asp-controller="Torrent" asp-action="All" asp-route-id="@pageNumber" asp-route-search="@Model.Search">
+                        <a class="page-link" asp-controller="Torrent" asp-action="Favourite" asp-route-id="@pageNumber">
                             <span aria-hidden="true"> @pageNumber </span>
                         </a>
                     </li>
@@ -122,7 +122,7 @@
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Torrent" asp-action="All" asp-route-id="@Model.NextPage" asp-route-search="@Model.Search" aria-label="Next">
+                        <a class="page-link" asp-controller="Torrent" asp-action="Favourite" asp-route-id="@Model.NextPage" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

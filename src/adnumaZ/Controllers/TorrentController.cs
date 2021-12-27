@@ -156,7 +156,7 @@ namespace adnumaZ.Controllers
         {
             id = Math.Max(1, id);
 
-            var skip = (id - 1) * TorrentsPerPage;
+            var skip = Math.Abs((id - 1) * TorrentsPerPage);
 
             var query = dbContext.Torrents
                 .Include(x => x.Uploader)
@@ -217,7 +217,7 @@ namespace adnumaZ.Controllers
         {
             id = Math.Max(1, id);
 
-            var skip = (id - 1) * TorrentsPerPage;
+            var skip = Math.Abs((id - 1) * TorrentsPerPage);
 
             var user = await userManager.GetUserAsync(HttpContext.User);
 
@@ -226,6 +226,8 @@ namespace adnumaZ.Controllers
                 .Include(x => x.FavouritedByUsers)
                 .Where(x => x.IsApproved)
                 .Where(x => x.FavouritedByUsers.Any(x=>x.Id == user.Id));
+
+            var qString = query.ToQueryString();
 
             var torrents = mapper.Map<List<TorrentViewModel>>(query
                 .OrderByDescending(x => x.ModifiedOn)
