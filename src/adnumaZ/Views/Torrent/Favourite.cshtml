@@ -3,7 +3,9 @@
     ViewData["Title"] = "Favourite";
 }
 
-<table class="table table-hover table-responsive-lg">
+@if (Model.TorrentCount != 0)
+{
+    <table class="table table-hover table-responsive-lg">
     <thead>
         <tr>
             <th scope="col">Title</th>
@@ -37,7 +39,16 @@
         </tr>
         }
     </tbody>
-</table>
+    </table>
+}
+else
+{
+      <div class="text-center">
+        <h1>Nothing in favourites</h1>
+        <h2>Go to all <a asp-area="" asp-controller="Torrent" asp-action="All">torrents</a> and favourite some !</h2>
+    </div>
+}
+
 
 @if (Model.TorrentCount != 0)
 {
