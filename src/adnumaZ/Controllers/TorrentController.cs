@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
 using adnumaZ.Areas.Administration.Controllers;
 using adnumaZ.Common.Constants;
-using adnumaZ.Common.Models;
 using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.Services.TorrentService.Contracts;
@@ -15,15 +20,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
-using Newtonsoft.Json;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace adnumaZ.Controllers
 {

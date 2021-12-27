@@ -55,7 +55,6 @@
 
                                 </div>
                                 <hr />
-
                             </div>
                             <div class="card-body">
                                 <article class="mb-3">
@@ -92,7 +91,6 @@
                                 <input type="hidden" name="id" value="@Model.Id" />
                                 <h3 class="text-center">Link: <input type="submit" class="torrent-download-link underline" value="@Model.Title"></h3>
                             </form>
-
                         </div>
                         <div class="img-post">
                             <img class="d-block img-fluid ml-auto mr-auto" src="@Model.ImageUrl" alt="Torrent Image">
@@ -125,7 +123,6 @@
                             <button id="favouriteButton" class="btn btn-info" onclick="favourite(@Model.Id)"> <i id="heartEmoji" class="far fa-heart"></i>
 <span class="ml-1">Favourite </span></button>
                             </div>
-                            
                         }
                         else if ((usrId != null && usrId != @Model.Uploader.Id) && @Model.FavouritedByUsersId.Contains(usrId))
                         {
@@ -173,7 +170,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="col-lg-4 col-md-12 right-box">
@@ -224,7 +220,7 @@
             $([document.documentElement, document.body]).animate({
                 scrollTop: $("#AddCommentForm").offset().top
             }, 1000);
-           $("#AddCommentForm > div > div > textarea").focus();
+            $("#AddCommentForm > div > div > textarea").focus();
         }
 
         function approve(torrentId) {
@@ -259,7 +255,6 @@
                 placeholderElement.find('.modal').modal('show');
             })
         })
-
 
             placeholderElement.on('click', '[data-save="modal"]', function (event) {
 
