@@ -117,20 +117,16 @@
                                 Downloaded times: @Model.DownloadersCount
                             </article>
                         </section>
-                        @if ((usrId != null && usrId != @Model.Uploader.Id) && !@Model.FavouritedByUsersId.Contains(usrId))
+                        <section class="buttons">
+                        @if ((usrId != null && usrId != @Model.Uploader.Id) && !@Model.IsFavourited)
                         {
-                            <div id="favouriteButtonContainer" class="mb-2">
                             <button id="favouriteButton" class="btn btn-info" onclick="favourite(@Model.Id)"> <i id="heartEmoji" class="far fa-heart"></i>
 <span class="ml-1">Favourite </span></button>
-                            </div>
                         }
-                        else if ((usrId != null && usrId != @Model.Uploader.Id) && @Model.FavouritedByUsersId.Contains(usrId))
+                        else if ((usrId != null && usrId != @Model.Uploader.Id) && @Model.IsFavourited)
                         {
-                            <div id="favouriteButtonContainer" class="mb-2">
                             <button id="favouriteButton" class="btn btn-info" onclick="favourite(@Model.Id)"> <i id="heartEmoji" class="fas fa-heart"></i><span class="ml-1">Unfavourite</span></button>
-                            </div>
                         }
-
                         @if ((usrId != null && usrId == @Model.Uploader.Id) || User.IsInRole(Constants.AdministratorRoleName))
                         {
                             <button type="button" class="btn btn-warning" data-toggle="ajax-modal" data-target="#editTorrent" data-url="@Url.Action("Edit", new {id = @Model.Id})">Edit</button>
@@ -148,6 +144,8 @@
                                 }
                             </div>
                         }
+                        </section>
+                        
                     </div>
                 </div>
                 <div class=".bg-light">
@@ -309,13 +307,16 @@
                         $("#favouriteButton").text("Favourited");
                     }
 
-                   $("#favouriteButtonContainer").load(location.href + " #favouriteButtonContainer");
+                   $.get(window.location, function(data) {
+                    $(document.body).html(data);    
+                     });
                 }
             });
         }
 
     $("#favouriteButton").hover(
   	() => { //hover
+          console.log("hovering");
           if($("#favouriteButton").text().toString().indexOf("Unfavourite") >= 0){
               $("#heartEmoji").removeClass("fas fa-heart");
               $("#heartEmoji").addClass("far fa-heart");
@@ -325,6 +326,7 @@
               $("#heartEmoji").addClass("fas fa-heart");
           }}, 
   	() => { //out
+          console.log("out");
     	  if($("#favouriteButton").text().toString().indexOf("Unfavourite") >= 0){
               $("#heartEmoji").removeClass("far fa-heart");
               $("#heartEmoji").addClass("fas fa-heart");

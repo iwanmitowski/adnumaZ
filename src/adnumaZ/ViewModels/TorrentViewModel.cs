@@ -34,5 +34,7 @@ namespace adnumaZ.ViewModels
         public IEnumerable<CommentViewModel> Comments { get; set; }
 
         public IEnumerable<string> FavouritedByUsersId { get; set; }
+
+        public bool IsFavourited { get; set; }
     }
 }
