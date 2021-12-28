@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using adnumaZ.Data;
 
 namespace adnumaZ.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211228064301_CreatingUserFavouriteTorrentsMappingTable")]
+    partial class CreatingUserFavouriteTorrentsMappingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,7 +334,7 @@ namespace adnumaZ.Data.Migrations
                     b.Property<DateTime>("DownloadedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 12, 28, 7, 18, 18, 210, DateTimeKind.Utc).AddTicks(4968));
+                        .HasDefaultValue(new DateTime(2021, 12, 28, 6, 43, 1, 369, DateTimeKind.Utc).AddTicks(1905));
 
                     b.Property<int>("TorrentId")
                         .HasColumnType("int");
@@ -356,11 +358,6 @@ namespace adnumaZ.Data.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("FavouritedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 12, 28, 7, 18, 18, 204, DateTimeKind.Utc).AddTicks(6045));
 
                     b.HasKey("TorrentId", "UserId");
 
@@ -401,7 +398,7 @@ namespace adnumaZ.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 12, 28, 7, 18, 18, 214, DateTimeKind.Utc).AddTicks(436));
+                        .HasDefaultValue(new DateTime(2021, 12, 28, 6, 43, 1, 374, DateTimeKind.Utc).AddTicks(4966));
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");

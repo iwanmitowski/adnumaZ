@@ -49,7 +49,7 @@ namespace adnumaZ.Services.Mapping
         {
             var user = GetUser();
 
-            destination.IsFavourited = source.FavouritedByUsers.Any(u=> u == user);
+            destination.IsFavourited = source.UserFavouritedTorrents.Any(uft => uft.User == user && uft.Torrent == source );
         }
         
         private User GetUser(string userId) => dbContext.UserAccounts.FirstOrDefault(x => x.Id == userId);

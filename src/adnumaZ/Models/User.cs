@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace adnumaZ.Models
 {
@@ -11,12 +12,10 @@ namespace adnumaZ.Models
     {
         public User()
         {
-            //this.Id = Guid.NewGuid().ToString();
             this.UploadedTorrents = new HashSet<Torrent>();
-            //this.DownloadedTorrents = new HashSet<Torrent>();
-            this.FavouriteTorrents = new HashSet<Torrent>();
             this.ImageUrl = Constants.DefaultProfilePfp;
             this.UserDownloadedTorrents = new HashSet<UserDownloadedTorrent>();
+            this.UserFavouritedTorrents = new HashSet<UserFavouritedTorrent>();
         }
 
         // Audit info
@@ -43,15 +42,13 @@ namespace adnumaZ.Models
 
         public double DownloadedTorrentGBs { get; set; }
 
+        [InverseProperty(nameof(Torrent.Uploader))]
         public virtual ICollection<Torrent> UploadedTorrents { get; set; }
-
-        //public virtual ICollection<Torrent> DownloadedTorrents { get; set; }
-
-        public virtual ICollection<Torrent> FavouriteTorrents { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
 
         public virtual ICollection<UserDownloadedTorrent> UserDownloadedTorrents { get; set; }
+        public virtual ICollection<UserFavouritedTorrent> UserFavouritedTorrents { get; set; }
 
     }
 }

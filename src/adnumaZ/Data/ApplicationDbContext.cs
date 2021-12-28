@@ -17,9 +17,17 @@ namespace adnumaZ.Data
         public DbSet<Torrent> Torrents { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserDownloadedTorrent> UserDownloadedTorrents { get; set; }
+        public DbSet<UserFavouritedTorrent> UserFavouritedTorrents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<UserFavouritedTorrent>()
+                .HasKey(uft => new { uft.TorrentId, uft.UserId });
+
+            builder.Entity<UserFavouritedTorrent>()
+                .Property(uft => uft.FavouritedAt)
+                .HasDefaultValue(DateTime.UtcNow);
+
             builder.Entity<UserDownloadedTorrent>()
                 .Property(udt => udt.DownloadedAt)
                 .HasDefaultValue(DateTime.UtcNow);

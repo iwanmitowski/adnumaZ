@@ -36,9 +36,11 @@ namespace adnumaZ.ViewModels
 
         public IEnumerable<CommentViewModel> Comments { get; set; }
 
-        public IEnumerable<string> FavouritedByUsersId { get; set; }
+        public IEnumerable<string> FavouritedByUsersId => UserFavouritedTorrents.Select(uft => uft.User.Id).Distinct();
 
         public IEnumerable<UserDownloadedTorrent> UserDownloadedTorrents { get; set; }
+
+        public IEnumerable<UserFavouritedTorrent> UserFavouritedTorrents { get; set; }
 
         public bool IsFavourited { get; set; }
     }
