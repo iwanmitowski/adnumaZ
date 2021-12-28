@@ -43,7 +43,7 @@
                                         <p>Uploaded GBs</p>
                                     </div>
                                     <span class="views-number">
-                                        @user.UploadedTorrentGBs
+                                        @user.UploadedTorrentGBs.ToString("F2")
                                     </span>
                                 </div>
                                 <div class="col-md-2 forum-info">
@@ -51,7 +51,7 @@
                                         <p>Downloaded GBs</p>
                                     </div>
                                     <span class="views-number">
-                                        @user.DownloadedTorrentGBs
+                                        @user.DownloadedTorrentGBs.ToString("F2")
                                     </span>
                                 </div>
                                 <div class="col-md-2 forum-info">

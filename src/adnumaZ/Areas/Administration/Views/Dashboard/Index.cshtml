@@ -54,7 +54,7 @@
                                     <p>Downloaded GBs</p>
                                 </div>
                                 <span class="views-number">
-                                    @Model.TotalDownloadedGBs
+                                    @Model.TotalDownloadedGBs.ToString("F2")
                                 </span>
                             </div>
                             <div class="col-md-2">
@@ -62,7 +62,7 @@
                                     <p>Uploaded GBs</p>
                                 </div>
                                 <span class="views-number">
-                                    @Model.TotalUploadedGBs
+                                    @Model.TotalUploadedGBs.ToString("F2")
                                 </span>
                             </div>
                         </div>

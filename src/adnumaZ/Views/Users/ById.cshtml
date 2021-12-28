@@ -92,8 +92,8 @@
                     <h4 class="text-right">User Torrent Stats</h4>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-12 mt-2"><label class="labels">Uploaded Torrent GBs</label><input type="text" value="@Model.UploadedTorrentGBs" class="form-control" readonly /></div>
-                    <div class="col-md-12 mt-2"><label class="labels">Downloaded Torrent GBs</label><input type="text" value="@Model.DownloadedTorrentGBs" class="form-control" readonly /></div>
+                    <div class="col-md-12 mt-2"><label class="labels">Uploaded Torrent GBs</label><input type="text" value="@Model.UploadedTorrentGBs.ToString("F2")" class="form-control" readonly /></div>
+                    <div class="col-md-12 mt-2"><label class="labels">Downloaded Torrent GBs</label><input type="text" value="@Model.DownloadedTorrentGBs.ToString("F2")" class="form-control" readonly /></div>
                     <div class="col-md-12 mt-2"><label class="labels">Uploaded Torrents Count</label><input type="text" value="@Model.UploadedTorrentsCount" class="form-control" readonly /></div>
                     <div class="col-md-12 mt-2"><label class="labels">Downloaded Torrents Count</label><input type="text" value="@Model.DownloadedTorrentsCount" class="form-control" readonly /></div>
                     <div class="col-md-12 mt-2"><label class="labels">Favourited Torrents Count</label><input type="text" value="@Model.FavouriteTorrentsCount" class="form-control" readonly /></div>
