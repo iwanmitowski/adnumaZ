@@ -53,7 +53,7 @@ namespace adnumaZ.Controllers
         public async Task<ActionResult<FavouriteTorrentResponseModel>> ChangeFavourability(FavouriteTorrentInputModel input)
         {
             var torrent = await dbContext.Torrents
-                .Include(x => x.FavouritedByUsers)
+                .Include(x => x.UserFavouritedTorrents)
                 .FirstOrDefaultAsync(x => x.Id == input.TorrentId);
 
             if (torrent == null)
@@ -64,14 +64,21 @@ namespace adnumaZ.Controllers
             var currentUser = await userManager.GetUserAsync(HttpContext.User);
 
             var user = await dbContext.UserAccounts.FindAsync(currentUser.Id);
+            var uft = torrent.UserFavouritedTorrents.FirstOrDefault(uft => uft.User == user && uft.Torrent == torrent);
 
-            if (torrent.FavouritedByUsers.Contains(user))
+            if (uft != null)
             {
-                torrent.FavouritedByUsers.Remove(user);
+                torrent.UserFavouritedTorrents.Remove(uft);
             }
             else
             {
-                torrent.FavouritedByUsers.Add(user);
+                uft = new UserFavouritedTorrent()
+                {
+                    User = user,
+                    Torrent = torrent,
+                };
+
+                torrent.UserFavouritedTorrents.Add(uft);
             }
 
             await dbContext.SaveChangesAsync();

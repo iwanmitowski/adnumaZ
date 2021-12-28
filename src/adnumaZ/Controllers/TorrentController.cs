@@ -64,7 +64,7 @@ namespace adnumaZ.Controllers
                 await dbContext.Torrents
                 .Include(x => x.Uploader)
                 .Include(x => x.UserDownloadedTorrents)
-                .Include(x=>x.FavouritedByUsers)
+                .Include(x => x.UserFavouritedTorrents)
                 .Include(x => x.Comments.OrderBy(x => x.IsDeleted).ThenByDescending(x => x.CreatedOn))
                 .FirstOrDefaultAsync(x => x.Id == id));
 
@@ -234,16 +234,13 @@ namespace adnumaZ.Controllers
 
             var query = dbContext.Torrents
                 .Include(x => x.Uploader)
-                .Include(x => x.FavouritedByUsers)
+                .Include(x => x.UserFavouritedTorrents)
                 .Where(x => x.IsApproved)
-                .Where(x => x.FavouritedByUsers.Any(x=>x.Id == user.Id));
+                .Where(x => x.UserFavouritedTorrents.Any(x => x.User.Id == user.Id));
 
-            var qString = query.ToQueryString();
+            query.OrderByDescending(x => x.UserFavouritedTorrents.Select(x => x.FavouritedAt));
 
             var torrents = mapper.Map<List<TorrentViewModel>>(query
-                .OrderByDescending(x => x.ModifiedOn)
-                .ThenBy(x => x.CreatedOn)
-                .ThenByDescending(x => x.Id)
                 .Skip(skip)
                 .Take(TorrentsPerPage))
                 .ToList();
@@ -253,7 +250,7 @@ namespace adnumaZ.Controllers
 
             if (pagesCount != 0 && id > pagesCount)
             {
-                return RedirectToAction(nameof(this.Favourite), new { id = pagesCount});
+                return RedirectToAction(nameof(this.Favourite), new { id = pagesCount });
             }
 
             var trackerApiPath = configuration["TrackerApiPath"];
