@@ -43,8 +43,13 @@ namespace adnumaZ.Areas.Administration.Controllers
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
 
+            var usersFromDb = dbContext.UserAccounts
+               .Include(x => x.UploadedTorrents)
+               .Include(x => x.UserDownloadedTorrents)
+               .Include(x => x.UserFavouritedTorrents);
+
             var users = mapper
-                .Map<List<UserViewModel>>(dbContext.Users)
+                .Map<List<UserViewModel>>(usersFromDb)
                 .Where(x => x.Id != user.Id)
                 .OrderByDescending(x => x.ModifiedOn)
                 .ThenByDescending(x => x.CreatedOn);
