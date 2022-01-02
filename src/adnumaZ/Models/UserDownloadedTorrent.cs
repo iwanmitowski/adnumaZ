@@ -8,6 +8,7 @@ namespace adnumaZ.Models
         public UserDownloadedTorrent()
         {
             this.Id = Guid.NewGuid().ToString();
+            this.DownloadedAt = DateTime.UtcNow;
         }
 
         public string Id { get; set; }

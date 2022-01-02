@@ -5,14 +5,19 @@ using adnumaZ.Data;
 using adnumaZ.Models;
 using adnumaZ.Services.TorrentService.Contracts;
 using adnumaZ.ViewModels;
+
 using AutoMapper;
+
 using BencodeNET.Parsing;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -66,7 +71,12 @@ namespace adnumaZ.Services.TorrentService
 
         public double SetTorrentSize(BencodeNET.Torrents.Torrent torrentObject)
         {
-            return torrentObject.Files.Sum(f => f.FileSize) / 1024d / 1024d / 1024d;
+            if (torrentObject.Files != null)
+            {
+                return torrentObject.Files.Sum(f => f.FileSize) / 1024d / 1024d / 1024d;
+            }
+
+            return torrentObject.File.FileSize / 1024d / 1024d / 1024d;
         }
 
         public async Task CreateTorrentInTheGivenDirectory(string saveToPath, UploadTorrentViewModel torrentDTO)
