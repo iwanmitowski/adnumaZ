@@ -1,4 +1,5 @@
 
+
 <h1 align="center">adnumaZ</h1>
 
 <div align="center">
@@ -71,6 +72,11 @@ Downloading the torrent file from the server file system
 Changing the custom name to the actual torrent name
 ```
 
+#### Favourite
+```
+Visualizing the favourited torrents from the current user
+```
+
 #### All
 ```
 Torrent info - Title, uploader, size, seeders, peers, upload date
@@ -84,7 +90,7 @@ Custom routing
 ```
 #### By Id
 ```
-Actions - Download, Edit, Comment torrent, Answering comments, Delete comments
+Actions - Download, Edit, Favourite, Comment torrent, Answering comments, Delete comments
 ```
 ```
 Admin Actions - Edit, Approve torrent, Delete comments
@@ -176,7 +182,9 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 * [Bootstrap](https://github.com/twbs/bootstrap)
 * [Particles.js](https://github.com/VincentGarreau/particles.js/)
 * [BencodeNET](https://github.com/Krusen/BencodeNET)
-* [bittorrent-tracker](https://github.com/webtorrent/bittorrent-tracker)
+* [Bittorrent-tracker](https://github.com/webtorrent/bittorrent-tracker)
+* [Moment.js](https://github.com/moment/moment)
+
 
 ## ✍️ Authors <a name = "authors"></a>
 - [@iwanmitowski](https://github.com/iwanmitowski) - Idea & Initial work
