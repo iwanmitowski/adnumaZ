@@ -15,6 +15,8 @@ namespace adnumaZ.ViewModels
         [MaxLength(500)]
         public string Description { get; set; }
 
+        public IFormFile Image { get; set; }
+
         public string ImageUrl { get; set; }
 
         public string UserId { get; set; }

@@ -21,6 +21,11 @@ namespace adnumaZ.Services.ImageUploadService
                 await image.CopyToAsync(memoryStream);
                 imageBytes = memoryStream.ToArray();
 
+               
+            }
+
+            using (var memoryStream = new MemoryStream(imageBytes))
+            {
                 var uploadParams = new ImageUploadParams()
                 {
                     File = new FileDescription(Guid.NewGuid().ToString(), memoryStream)

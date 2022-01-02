@@ -6,14 +6,18 @@ using System.Threading.Tasks;
 
 using adnumaZ.Areas.Administration.Controllers;
 using adnumaZ.Common.Constants;
+using adnumaZ.Common.Models;
 using adnumaZ.Data;
 using adnumaZ.Models;
+using adnumaZ.Services.ImageUploadService;
 using adnumaZ.Services.TorrentService.Contracts;
 using adnumaZ.ViewModels;
 
 using AutoMapper;
 
 using BencodeNET.Parsing;
+
+using CloudinaryDotNet;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +37,7 @@ namespace adnumaZ.Controllers
         private readonly IConfiguration configuration;
         private readonly ITorrentService torrentService;
         private readonly IBencodeParser bencodeParser;
+        private readonly Cloudinary cloudinary;
         private readonly string TorrentsDirectory;
 
         public TorrentController(ApplicationDbContext dbContext,
@@ -40,7 +45,8 @@ namespace adnumaZ.Controllers
             UserManager<User> userManager,
             IConfiguration configuration,
             ITorrentService torrentService,
-            IBencodeParser bencodeParser)
+            IBencodeParser bencodeParser,
+            Cloudinary cloudinary)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -48,7 +54,7 @@ namespace adnumaZ.Controllers
             this.configuration = configuration;
             this.torrentService = torrentService;
             this.bencodeParser = bencodeParser;
-
+            this.cloudinary = cloudinary;
             var torrentsDirectory = Environment.GetEnvironmentVariable("FILE_UPLOAD_DIRECTORY");
             if (torrentsDirectory == null)
             {
@@ -134,6 +140,13 @@ namespace adnumaZ.Controllers
                 var torrentObject = await torrentService.GetTorrentObjectAsync(torrentStream);
 
                 var torrent = mapper.Map<Torrent>(torrentDTO);
+
+                if (torrentDTO.Image != null)
+                {
+                    var imageUrl = await ImageUploadService.UploadImageAsync(cloudinary, torrentDTO.Image);
+                    torrent.ImageUrl = imageUrl;
+                }
+
                 torrent.Size = torrentService.SetTorrentSize(torrentObject);
                 torrent.Hash = torrentService.SetTorrentHash(torrentObject);
 
@@ -208,8 +221,16 @@ namespace adnumaZ.Controllers
             var trackerApiPath = configuration["TrackerApiPath"];
             var torrentSeedDataTasks = torrentService.GetTorrentSeedData(trackerApiPath, torrents);
 
-            var torrentSeedData = torrentSeedDataTasks
-                .ToDictionary(t => t.Result.Hash, t => t.Result);
+            var torrentSeedData = new Dictionary<string, TorrentSeedData>();
+
+            torrentSeedDataTasks
+            .ForEach(t =>
+            {
+                if (!torrentSeedData.ContainsKey(t.Result.Hash))
+                {
+                    torrentSeedData.Add(t.Result.Hash, t.Result);
+                }
+            });
 
             var viewModel = new TorrentListViewModel()
             {
