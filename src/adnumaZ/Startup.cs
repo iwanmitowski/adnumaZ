@@ -18,6 +18,7 @@ using adnumaZ.Services.CommentService;
 using BencodeNET.Parsing;
 using adnumaZ.Services.TorrentService;
 using adnumaZ.Services.TorrentService.Contracts;
+using CloudinaryDotNet;
 
 namespace adnumaZ
 {
@@ -75,6 +76,23 @@ namespace adnumaZ
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddSingleton<IConfiguration>(Configuration);
+
+            // Cloudinary Configurations
+
+            var cloudinaryCloudName = Configuration["Cloudinary:CloudName"];
+            var cloudinaryKey = Configuration["Cloudinary:Key"];
+            var cloudinarySecret = Configuration["Cloudinary:Secret"];
+
+
+            Account cloudinaryAccount = new Account(
+                    cloudinaryCloudName,
+                    cloudinaryKey,
+                    cloudinarySecret);
+
+            Cloudinary cloudinary = new Cloudinary(cloudinaryAccount);
+            cloudinary.Api.Secure = true;
+
+            services.AddSingleton(cloudinary);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
