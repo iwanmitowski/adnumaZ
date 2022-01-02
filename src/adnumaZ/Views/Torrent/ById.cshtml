@@ -26,8 +26,7 @@
                                     <div class="media-body ml-3">
                                         @comment.UserUserName
                                         <div class="text-muted small">
-                                            @*<time datetime="@comment.CreatedOn.ToString("O")"></time>*@
-                                            <time>@comment.CreatedOn</time>
+                                            <time datetime="@comment.CreatedOn.ToString("O")">@comment.CreatedOn</time>
                                         </div>
                                     </div>
 
@@ -108,7 +107,7 @@
                                 Uploader: <a asp-controller="Users" asp-action="ById" asp-route-id="@Model.Uploader.Id">@Model.Uploader.UserName</a>
                             </article>
                             <article>
-                                Uploaded on: @Model.CreatedOn
+                                Uploaded on: @Model.CreatedOn.ToShortDateString()
                             </article>
                             <article>
                                 Torrent size: @Model.Size.ToString("F2") GBs

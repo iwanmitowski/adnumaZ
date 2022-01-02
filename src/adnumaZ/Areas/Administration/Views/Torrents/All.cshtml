@@ -31,7 +31,7 @@
                     <td>
                         <button value="Approve" class="btn btn-success" onclick="approve(@torrent.Id)"> Approve </button>
                     </td>
-                    <td>@torrent.CreatedOn</td>
+                    <td><time datetime="@torrent.CreatedOn.ToString("O")">@torrent.CreatedOn</time></td>
                 </tr>
             }
 
