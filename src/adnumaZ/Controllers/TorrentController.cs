@@ -71,8 +71,10 @@ namespace adnumaZ.Controllers
                 .Include(x => x.Uploader)
                 .Include(x => x.UserDownloadedTorrents)
                 .Include(x => x.UserFavouritedTorrents)
-                .Include(x => x.Comments.OrderBy(x => x.IsDeleted).ThenByDescending(x => x.CreatedOn))
+                .Include(x => x.Comments)
                 .FirstOrDefaultAsync(x => x.Id == id));
+
+            torrent.Comments.OrderByDescending(x => x.IsDeleted).ThenByDescending(x => x.CreatedOn);
 
             if (torrent == null)
             {
@@ -277,8 +279,16 @@ namespace adnumaZ.Controllers
             var trackerApiPath = configuration["TrackerApiPath"];
             var torrentSeedDataTasks = torrentService.GetTorrentSeedData(trackerApiPath, torrents);
 
-            var torrentSeedData = torrentSeedDataTasks
-                .ToDictionary(t => t.Result.Hash, t => t.Result);
+            var torrentSeedData = new Dictionary<string, TorrentSeedData>();
+
+            torrentSeedDataTasks
+            .ForEach(t =>
+            {
+                if (!torrentSeedData.ContainsKey(t.Result.Hash))
+                {
+                    torrentSeedData.Add(t.Result.Hash, t.Result);
+                }
+            });
 
             var viewModel = new TorrentListViewModel()
             {

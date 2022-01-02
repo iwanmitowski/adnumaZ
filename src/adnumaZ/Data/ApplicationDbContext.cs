@@ -25,12 +25,10 @@ namespace adnumaZ.Data
                 .HasKey(uft => new { uft.TorrentId, uft.UserId });
 
             builder.Entity<UserFavouritedTorrent>()
-                .Property(uft => uft.FavouritedAt)
-                .HasDefaultValue(DateTime.UtcNow);
+                .Property(uft => uft.FavouritedAt);
 
             builder.Entity<UserDownloadedTorrent>()
-                .Property(udt => udt.DownloadedAt)
-                .HasDefaultValue(DateTime.UtcNow);
+                .Property(udt => udt.DownloadedAt);
 
             builder.Entity<User>()
                 .HasMany(t => t.UploadedTorrents)
