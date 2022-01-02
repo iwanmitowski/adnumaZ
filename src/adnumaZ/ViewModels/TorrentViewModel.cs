@@ -1,5 +1,6 @@
 ﻿using adnumaZ.Models;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -26,7 +27,7 @@ namespace adnumaZ.ViewModels
 
         public User Uploader { get; set; }
 
-        public string CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public bool IsApproved { get; set; }
 

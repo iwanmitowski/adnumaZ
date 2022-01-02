@@ -35,7 +35,7 @@
                 <td>N/A</td>
                 <td>N/A</td>
             }
-            <td>@torrent.CreatedOn</td>
+            <td><time datetime="@torrent.CreatedOn.ToString("O")">@torrent.CreatedOn</time></td>
         </tr>
         }
     </tbody>

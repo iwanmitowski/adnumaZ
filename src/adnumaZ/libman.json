@@ -42,6 +42,13 @@
       "files": [
         "particles.min.js"
       ]
+    },
+    {
+      "library": "moment@2.29.1",
+      "destination": "wwwroot/lib/moment/",
+      "files": [
+        "min/moment-with-locales.min.js"
+      ]
     }
   ]
 }

@@ -67,7 +67,7 @@
                                         <p>Register date</p>
                                     </div>
                                     <span class="views-number">
-                                        @user.CreatedOn
+                                        <time datetime="@user.CreatedOn.ToString("O")">@user.CreatedOn</time>
                                     </span>
                                 </div>
                             </div>
