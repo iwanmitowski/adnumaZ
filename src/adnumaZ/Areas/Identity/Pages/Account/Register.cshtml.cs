@@ -5,9 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+
+using adnumaZ.Common.Constants;
 using adnumaZ.Models;
+using adnumaZ.Services.ImageUploadService;
+
+using CloudinaryDotNet;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,17 +31,20 @@ namespace adnumaZ.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly Cloudinary cloudinary;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            Cloudinary cloudinary)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            this.cloudinary = cloudinary;
         }
 
         [BindProperty]
@@ -55,8 +65,8 @@ namespace adnumaZ.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Display(Name = "Image url")]
-            public string ImageUrl { get; set; }
+            [Display(Name = "Profile picture")]
+            public IFormFile Image { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -88,7 +98,18 @@ namespace adnumaZ.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = Input.UserName, Email = Input.Email };
+
+                if (user.ImageUrl != null)
+                {
+                    user.ImageUrl = await ImageUploadService.UploadImageAsync(cloudinary, Input.Image);
+                }
+                else
+                {
+                    user.ImageUrl = Constants.DefaultProfilePfp;
+                }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

@@ -5,7 +5,7 @@
 }
 
 <div>
-    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="d-flex justify-content-center align-baseline">
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data" class="d-flex justify-content-center align-baseline">
         <div>
             <h3 class="mt-3">Create a new account.</h3>
             <hr />
@@ -23,9 +23,9 @@
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.ImageUrl"></label>
-                <input asp-for="Input.ImageUrl" class="form-control" />
-                <span asp-validation-for="Input.ImageUrl" class="text-danger"></span>
+                <label asp-for="Input.Image"></label>
+                <input asp-for="Input.Image" class="form-control" />
+                <span asp-validation-for="Input.Image" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>

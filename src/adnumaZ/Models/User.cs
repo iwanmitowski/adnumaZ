@@ -1,5 +1,7 @@
 ﻿using adnumaZ.Common.Constants;
 using adnumaZ.Common.Models.Contracts;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -36,6 +38,7 @@ namespace adnumaZ.Models
         public DateTime? DeletedOn { get; set; }
 
         // User 
+
         public string ImageUrl { get; set; }
 
         public double UploadedTorrentGBs { get; set; }
@@ -48,6 +51,7 @@ namespace adnumaZ.Models
         public virtual ICollection<Comment> Comments { get; set; }
 
         public virtual ICollection<UserDownloadedTorrent> UserDownloadedTorrents { get; set; }
+
         public virtual ICollection<UserFavouritedTorrent> UserFavouritedTorrents { get; set; }
 
     }
