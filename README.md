@@ -184,6 +184,7 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 * [BencodeNET](https://github.com/Krusen/BencodeNET)
 * [Bittorrent-tracker](https://github.com/webtorrent/bittorrent-tracker)
 * [Moment.js](https://github.com/moment/moment)
+* [Cloudinary](https://cloudinary.com/)
 
 
 ## ✍️ Authors <a name = "authors"></a>
