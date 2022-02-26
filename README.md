@@ -192,6 +192,6 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 - [@kaykayehnn](https://github.com/kaykayehnn) - Initial work & Deployment
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
-- Knowledge - [@NikolayIT](https://github.com/NikolayIT)
+- Knowledge - [Nikolay Kostov](https://github.com/NikolayIT), [Stoyan Shopov](https://github.com/StoyanShopov/)
 - Inspiration - [@zamunda](http://zelka.org/browse.php)
 - All the youtube and stackoverflow guys ❤️
