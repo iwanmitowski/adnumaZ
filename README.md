@@ -185,7 +185,7 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 * [Bittorrent-tracker](https://github.com/webtorrent/bittorrent-tracker)
 * [Moment.js](https://github.com/moment/moment)
 * [Cloudinary](https://cloudinary.com/)
-
+* [Google reCaptcha v3](https://developers.google.com/recaptcha/docs/v3)
 
 ## ✍️ Authors <a name = "authors"></a>
 - [@iwanmitowski](https://github.com/iwanmitowski) - Idea & Initial work
