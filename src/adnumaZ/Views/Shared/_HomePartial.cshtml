@@ -7,26 +7,19 @@
 </div>
 <div class="centering">
     <div class="container text-center">
-
-        @if (!User.Identity.IsAuthenticated)
-        {
             <h1 class="text-center">Welcome to adnumaZ</h1>
-            <h2 class="text-center">your best torrent tracker</h2>
+            <h2 class="text-center">A modern Research and Development portal</h2>
             <div>
                 <a class="btn btn-primary mt-4" asp-area="Identity" asp-controller="Account" asp-action="Register">Register</a>
             </div>
             <div>
-                <a class="d-block mt-3" asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a>
+                <a class="d-block my-3" asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a>
             </div>
-        }
-        else
-        {
             @await Component.InvokeAsync("RecentTorrents")
 
             <div>
                 <a class="mt-3 btn btn-primary" asp-area="" asp-controller="Torrent" asp-action="All">Check more</a>
             </div>
-        }
     </div>
 </div>
 <script>
