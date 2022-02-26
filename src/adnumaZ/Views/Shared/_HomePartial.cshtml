@@ -9,12 +9,16 @@
     <div class="container text-center">
             <h1 class="text-center">Welcome to adnumaZ</h1>
             <h2 class="text-center">A modern Research and Development portal</h2>
-            <div>
-                <a class="btn btn-primary mt-4" asp-area="Identity" asp-controller="Account" asp-action="Register">Register</a>
-            </div>
-            <div>
-                <a class="d-block my-3" asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a>
-            </div>
+
+            @if(!User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <a class="btn btn-primary mt-4" asp-area="Identity" asp-controller="Account" asp-action="Register">Register</a>
+                </div>
+                <div>
+                    <a class="d-block my-3" asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a>
+                </div>
+            }
             @await Component.InvokeAsync("RecentTorrents")
 
             <div>
