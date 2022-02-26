@@ -329,3 +329,83 @@
 
 </script>
 }
+<main class="content">
+    <div class="container p-0">
+
+		<h1 class="h3 mb-3">Live chat</h1>
+
+		<div class="card">
+			<div class="row g-0">
+				<div class="col-12 border-right">
+					<div class="position-relative">
+						<div class="chat-messages p-4" id="messagesList">
+
+				</div>
+
+
+					<div class="flex-grow-0 py-3 px-4 border-top">
+						<div class="input-group">
+							<input type="text" id="messageInput" class="form-control" placeholder="Type your message">
+							<button id="sendButton" class="btn btn-primary">Send</button>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</main>
+<style>
+
+.chat-online {
+    color: #34ce57
+}
+
+.chat-offline {
+    color: #e4606d
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    max-height: 800px;
+    min-height: 300px;
+    overflow-y: scroll
+}
+
+.chat-message-left,
+.chat-message-right {
+    display: flex;
+    flex-shrink: 0
+}
+
+.chat-message-left {
+    margin-right: auto
+}
+
+.chat-message-right {
+    flex-direction: row-reverse;
+    margin-left: auto
+}
+.py-3 {
+    padding-top: 1rem!important;
+    padding-bottom: 1rem!important;
+}
+.px-4 {
+    padding-right: 1.5rem!important;
+    padding-left: 1.5rem!important;
+}
+.flex-grow-0 {
+    flex-grow: 0!important;
+}
+.border-top {
+    border-top: 1px solid #dee2e6!important;
+}
+</style>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script>
+window.userData = {
+    username: "@User.Identity.Name",
+    avatarUrl: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+}
+</script>
+<script src="~/js/chat.js"></script>

@@ -19,6 +19,7 @@ using BencodeNET.Parsing;
 using adnumaZ.Services.TorrentService;
 using adnumaZ.Services.TorrentService.Contracts;
 using CloudinaryDotNet;
+using SignalRChat.Hubs;
 
 namespace adnumaZ
 {
@@ -93,6 +94,8 @@ namespace adnumaZ
             cloudinary.Api.Secure = true;
 
             services.AddSingleton(cloudinary);
+
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -139,8 +142,10 @@ namespace adnumaZ
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
 
+            // app.MapHub<ChatHub>("/chatHub");
         }
     }
 }
