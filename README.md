@@ -193,5 +193,5 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 - Knowledge - [Nikolay Kostov](https://github.com/NikolayIT), [Stoyan Shopov](https://github.com/StoyanShopov/)
-- Inspiration - [@zamunda](http://zelka.org/browse.php)
+- Inspiration - [Zamunda](http://zelka.org/browse.php)
 - All the youtube and stackoverflow guys ❤️
