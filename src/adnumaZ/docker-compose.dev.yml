@@ -11,3 +11,9 @@ services:
     ports:
       - 5000:5000
     command: /app/dev.sh
+
+  db:
+    networks:
+      - gateway
+    ports:
+      - 1433:1433
