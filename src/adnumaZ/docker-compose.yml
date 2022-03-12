@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.7"
 
 networks:
   internal:
@@ -19,7 +19,7 @@ services:
       # This volume must be owned by root
       - ./appdata/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
       - ./appdata/Torrents:/torrents
-  
+
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     networks:

@@ -119,7 +119,7 @@
                         <section class="buttons">
                         @if ((usrId != null && usrId != @Model.Uploader.Id) && !@Model.IsFavourited)
                         {
-                            <button id="favouriteButton" class="btn btn-info" onclick="favourite(@Model.Id)"> <i id="heartEmoji" class="far fa-heart"></i>
+                            <button id="favouriteButton" class="btn btn-info mb-2" onclick="favourite(@Model.Id)"> <i id="heartEmoji" class="far fa-heart"></i>
 <span class="ml-1">Favourite </span></button>
                         }
                         else if ((usrId != null && usrId != @Model.Uploader.Id) && @Model.IsFavourited)
@@ -128,7 +128,8 @@
                         }
                         @if ((usrId != null && usrId == @Model.Uploader.Id) || User.IsInRole(Constants.AdministratorRoleName))
                         {
-                            <button type="button" class="btn btn-warning" data-toggle="ajax-modal" data-target="#editTorrent" data-url="@Url.Action("Edit", new {id = @Model.Id})">Edit</button>
+                            <div id="PlaceHolderHere"></div>
+                            <button type="button" class="btn btn-warning" data-toggle="ajax-modal" data-target="#editButton" data-url="@Url.Action("Edit", new {id = @Model.Id})">Edit</button>
                         }
                         @if (User.IsInRole(Constants.AdministratorRoleName))
                         {
@@ -322,7 +323,9 @@
 
 </script>
 }
-<main class="content">
+@if(User.Identity.IsAuthenticated)
+{
+    <main class="content">
     <div class="container p-0">
 
 		<h1 class="h3 mb-3">Live chat</h1>
@@ -398,7 +401,8 @@
 <script>
 window.userData = {
     username: "@User.Identity.Name",
-    avatarUrl: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    avatarUrl: '@Model.CurrentUser?.ImageUrl ?? string.Empty'
 }
 </script>
 <script src="~/js/chat.js"></script>
+}

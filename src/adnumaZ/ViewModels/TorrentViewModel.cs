@@ -44,5 +44,7 @@ namespace adnumaZ.ViewModels
         public IEnumerable<UserFavouritedTorrent> UserFavouritedTorrents { get; set; }
 
         public bool IsFavourited { get; set; }
+        
+        public User CurrentUser {get;set;}
     }
 }

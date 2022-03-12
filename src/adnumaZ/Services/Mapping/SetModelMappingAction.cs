@@ -50,6 +50,8 @@ namespace adnumaZ.Services.Mapping
             var user = GetUser();
 
             destination.IsFavourited = source.UserFavouritedTorrents.Any(uft => uft.User == user && uft.Torrent == source );
+        
+            destination.CurrentUser = user;
         }
         
         private User GetUser(string userId) => dbContext.UserAccounts.FirstOrDefault(x => x.Id == userId);

@@ -16,6 +16,7 @@ namespace adnumaZ.Models
             this.ImageUrl = Constants.DefaultProfilePfp;
             this.UserDownloadedTorrents = new HashSet<UserDownloadedTorrent>();
             this.UserFavouritedTorrents = new HashSet<UserFavouritedTorrent>();
+            this.CreatedOn = DateTime.UtcNow;
         }
 
         // Audit info
