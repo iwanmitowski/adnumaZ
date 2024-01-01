@@ -22,9 +22,9 @@
                         <div class="card mb-4">
                             <div class="ml-3 mt-3 mr-3">
                                 <div class="media flex-wrap w-100 align-items-center">
-                                    <img src="@comment.UserImageUrl" class="d-block ui-w-50 rounded-circle img-sm" alt="User Profile pic">
+                                    <img src="@comment.User.ImageUrl" class="d-block ui-w-50 rounded-circle img-sm" alt="User Profile pic">
                                     <div class="media-body ml-3">
-                                        @comment.UserUserName
+                                        @comment.User.UserName
                                         <div class="text-muted small">
                                             @*<time datetime="@comment.CreatedOn.ToString("O")"></time>*@
                                             <time>@comment.CreatedOn</time>
@@ -123,6 +123,7 @@
                         {
                             <div id="PlaceHolderHere"></div>
                             <button type="button" class="btn btn-warning" data-toggle="ajax-modal" data-target="#editTorrent" data-url="@Url.Action("Edit", new {id = @Model.Id})">Edit</button>
+                            
                         }
                         @if (User.IsInRole(Constants.AdministratorRoleName))
                         {

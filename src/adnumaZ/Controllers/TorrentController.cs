@@ -1,4 +1,4 @@
-using adnumaZ.Areas.Administration.Controllers;
+﻿using adnumaZ.Areas.Administration.Controllers;
 using adnumaZ.Common.Constants;
 using adnumaZ.Common.Models;
 using adnumaZ.Data;
@@ -107,14 +107,17 @@ namespace adnumaZ.Controllers
                 var torrentObject = await parser.ParseAsync<BencodeNET.Torrents.Torrent>(torrentStream);
 
             var torrent = mapper.Map<Torrent>(torrentDTO);
+            try {
                 torrent.Size = torrentObject.Files.Sum(f => f.FileSize) / 1024d / 1024d / 1024d;
+            } catch (Exception) { torrent.Size = 0.06; }
+                
                 torrent.Hash = torrentObject.GetInfoHash().ToLower();
 
             await dbContext.AddAsync(torrent);
 
             int fileNumber = dbContext.Torrents.Count() + 1;
             var fileName = "File" + fileNumber + ".torrent";
-                var saveToPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+                var saveToPath = Path.Combine("/torrents", fileName);
 
             torrent.TorrentFilePath = saveToPath;
 
@@ -186,7 +189,11 @@ namespace adnumaZ.Controllers
             var trackerApiPath = configuration["TrackerApiPath"];
             foreach (var torrent in torrents)
             {
-                if (configuration["TrackerApiPath"] == null)
+                if (torrent.Hash == null)
+                {
+                    
+                }
+                else if (configuration["TrackerApiPath"] == null)
                 {
                     torrentSeedDataTasks.Add(Task.FromResult(new TorrentSeedData() { Hash = torrent.Hash }));
                 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using adnumaZ.Common.Аttributes;
 
 namespace adnumaZ.ViewModels
 {
@@ -19,7 +20,7 @@ namespace adnumaZ.ViewModels
 
         public string UserId { get; set; }
 
-        //[GoogleReCaptchaValidation]
+        [GoogleReCaptchaValidation]
         public string RecaptchaValue { get; set; }
     }
 }

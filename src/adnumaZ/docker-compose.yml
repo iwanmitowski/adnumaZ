@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.7"
 
 networks:
   internal:
@@ -15,6 +15,9 @@ services:
     environment:
       - TRACKER_API=http://tracker:$TRACKER_API_PORT
       - FILE_UPLOAD_DIRECTORY=/torrents
+      - ASPNETCORE_ENVIRONMENT=Production
+      - SQL_CONNECTION_STRING=Server=db;Database=master;User=sa;Password=$SA_PASSWORD;MultipleActiveResultSets=True    
+
     volumes:
       # This volume must be owned by root
       - ./appdata/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
@@ -43,3 +46,4 @@ services:
     ports:
       - 6969:6969/tcp
       - 6969:6969/udp
+      - 8085:8080

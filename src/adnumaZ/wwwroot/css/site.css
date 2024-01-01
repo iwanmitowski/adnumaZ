@@ -76,6 +76,10 @@ for details on configuring this project to bundle and minify static web assets. 
       --text-color: inherit;
       --input-background: inherit;
   }
+
+  a.navbar-brand.navbar-brand.navbar-brand.navbar-brand.navbar-brand {
+      color: #0069d9 !important
+  }
 }
 
 

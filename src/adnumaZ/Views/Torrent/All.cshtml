@@ -35,15 +35,15 @@
             <td>Temp Cat 1, Temp Cat 2</td>
             <td>@torrent.Uploader</td>
             <td>@torrent.Size.ToString("F2") GBs</td>
-            @if (Model.TorrentSeedData.TryGetValue(torrent.Hash, out var tsd))
+            @if (torrent.Hash != null && Model.TorrentSeedData.TryGetValue(torrent.Hash, out var tsd))
             {
                 <td>@tsd.Seeders</td>
                 <td>@tsd.Peers</td>
             }
             else
             {
-                <td>N/A</td>
-                <td>N/A</td>
+                <td>0</td>
+                <td>0</td>
             }
             <td>@torrent.CreatedOn</td>
         </tr>

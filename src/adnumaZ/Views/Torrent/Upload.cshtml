@@ -33,9 +33,7 @@
     </form>
 </div>
 
-@*Uncomment and the recaptcha attribute in the model!!!*@ 
-
-@*@section Scripts
+@section Scripts
 {
     <script src="https://www.google.com/recaptcha/api.js?render=@this.Configuration["GoogleReCaptcha:Key"]"></script>
     <script>
@@ -45,4 +43,4 @@
             });
         });
     </script>
-}*@
+}
